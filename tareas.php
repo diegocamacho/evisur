@@ -19,12 +19,6 @@
                                                                     <span class="badge badge-danger">8</span>
                                                                 </a>
                                                             </li>
-                                                            <li class="divider"></li>
-                                                            <li>
-                                                                <a href="javascript:;" class="sbold uppercase" data-title="Canceladas"> CANCELADAS
-                                                                    <span class="badge badge-warning">23</span>
-                                                                </a>
-                                                            </li>
                                                         </ul>
                                                         <ul class="inbox-contacts">
                                                             <li class="divider margin-bottom-30"></li>

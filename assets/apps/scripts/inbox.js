@@ -4,8 +4,9 @@ var AppInbox = function () {
     var listListing = '';
 
     var loadInbox = function (el, name) {
-        var url = 'app_inbox_inbox.html';
+        var url = 'app_inbox_inbox.php';
         var title = el.attr('data-title');
+        var tipo = el.attr('data-title');
         listListing = name;
 
         App.blockUI({
@@ -21,6 +22,7 @@ var AppInbox = function () {
             cache: false,
             url: url,
             dataType: "html",
+            data: {'tipo': tipo},
             success: function(res) 
             {
                 toggleButton(el);
@@ -53,6 +55,7 @@ var AppInbox = function () {
             });
         });
     }
+
 
     var loadMessage = function (el, name, resetMenu) {
         var url = 'app_inbox_view.html';
