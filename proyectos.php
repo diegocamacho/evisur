@@ -121,7 +121,7 @@ $q=mysql_query($sql);
 
 
 <!-- Modal -->
-<div class="modal fade" id="EditaUsuario">
+<div class="modal fade" id="EditaProyecto">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
@@ -133,7 +133,7 @@ $q=mysql_query($sql);
 <!-- Loader -->
 		<div class="row oculto" id="load_big">
 			<div class="col-md-12 text-center" >
-				<img src="assets/global/img/Preloader_3.gif" border="0" width="125" />
+				<img src="assets/global/img/ajax-loading.gif" border="0"  />
 			</div>
 		</div>
 <!--Formulario -->
@@ -151,9 +151,9 @@ $q=mysql_query($sql);
 		      
       </div>
       <div class="modal-footer">      	
-      	<img src="assets/global/img/loading-spinner-grey.gif" border="0" id="load2" width="30" class="oculto" />
+      	<img src="assets/global/img/loading-spinner-grey.gif" border="0" id="load2" width="25" class="oculto" />
         <button type="button" class="btn btn-default btn_ac btn-modal" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-success btn_ac btn-modal" onclick="EditaUsuario()">Actualizar Usuario</button>
+        <button type="button" class="btn btn-success btn_ac btn-modal" onclick="editaProyecto()">Actualizar Proyecto</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -171,19 +171,11 @@ $(function(){
 		$('#load_big').show();
 	    var data_id = $(this).attr('data-id');
 	    $.ajax({
-	   	url: "data/usuarios.php",
+	   	url: "data/proyectos.php",
 	   	data: 'id_proyecto='+data_id,
 	   	success: function(data){
-	   		var datos = data.split('|');
-	   		var id_tipo_usuario=datos[0];
-	   		var nombre=datos[1];
-	   		var email=datos[2];
-	   		var celular=datos[3];
-	   		
-	   		$('#id_tipo_usuario').val(id_tipo_usuario);
-	   		$('#nombre').val(nombre);
-	   		$('#email').val(email);
-	   		$('#celular').val(celular);
+
+	   		$('#nombre').val(data);
 	   		$('#id_proyecto').val(data_id);
 	   		
 	   		
@@ -200,7 +192,7 @@ $(function(){
 		$('#nuevo_nombre').focus();
 	});
 	
-	$('#NuevoUsuario').on('hidden.bs.modal',function(e){
+	$('#NuevoProyecto').on('hidden.bs.modal',function(e){
 		$('#id_tipo_usuario').val("0");
 		$('.dat').val("");
 		$('#msg_error2').hide();
@@ -208,7 +200,7 @@ $(function(){
 		$('#ver_permisos').hide();
 	});
 	
-	$('#EditaUsuario').on('hidden.bs.modal',function(e){
+	$('#EditaProyecto').on('hidden.bs.modal',function(e){
 		$('.edit').val("");
 		$('#msg_error2').hide();
 		$('#msg_error').hide();
@@ -220,16 +212,16 @@ $(function(){
 	});
 });
 
-function EditaUsuario(){
+function editaProyecto(){
 	$('#msg_error2').hide('Fast');
 	$('.btn_ac').hide();
 	$('#load2').show();
 	var datos=$('#frm_edita').serialize();
-	$.post('ac/edita_usuario.php',datos,function(data){
+	$.post('ac/edita_proyecto.php',datos,function(data){
 	    if(data==1){
 	    	$('#load2').hide();
 			$('.btn').show();
-			window.open("?Modulo=Usuarios&msg=2", "_self");
+			window.open("?Modulo=Proyectos&msg=2", "_self");
 	    }else{
 	    	$('#load2').hide();
 			$('.btn').show();
@@ -243,7 +235,7 @@ function Desactiva(id){
 	$("#load_"+id+"").show();
 	$.post('ac/activa_desactiva_proyecto.php', { tipo: "0", id_proyecto: ""+id+"" },function(data){
 		if(data==1){
-			window.open("?Modulo=Usuarios", "_self");
+			window.open("?Modulo=Proyectos", "_self");
 		}else{
 			$("#load_"+id+"").hide();
 			$(".btn_"+id+"").show();
@@ -254,9 +246,9 @@ function Desactiva(id){
 function Activa(id){
 	$(".btn_"+id+"").hide();
 	$("#load_"+id+"").show();
-	$.post('ac/activa_desactiva_usuario.php', { tipo: "1", id_proyecto: ""+id+"" },function(data){
+	$.post('ac/activa_desactiva_proyecto.php', { tipo: "1", id_proyecto: ""+id+"" },function(data){
 		if(data==1){
-			window.open("?Modulo=Usuarios", "_self");
+			window.open("?Modulo=Proyectos", "_self");
 		}else{
 			$("#load_"+id+"").hide();
 			$(".btn_"+id+"").show();
