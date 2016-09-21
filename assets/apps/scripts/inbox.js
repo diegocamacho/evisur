@@ -11,7 +11,7 @@ var AppInbox = function () {
 
         App.blockUI({
             target: content,
-            overlayColor: 'none',
+            overlayColor: 'black',
             animate: true
         });
 

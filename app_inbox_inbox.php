@@ -1,5 +1,19 @@
 <?
+include('includes/session.php');
+include('includes/db.php');
+include('includes/funciones.php');
+
 $tipo = $_GET['tipo']; //Recibidas Enviadas;
+
+$sql = "SELECT*FROM tareas WHERE id_destino = $s_id_usuario AND activo = 1 AND terminado_creador = 0 AND terminado_destino = 0 ORDER BY leido ASC, fecha_hora_limite DESC";
+$q = mysql_query($sql);
+$tareas = array();
+
+while($datos = mysql_fetch_object($q)):
+	$tareas[] = $datos;
+
+endwhile;
+
 ?>
 <table class="table table-striped table-advance table-hover">
     <thead>
@@ -27,46 +41,58 @@ $tipo = $_GET['tipo']; //Recibidas Enviadas;
         </tr>
     </thead>
     <tbody>
-        <tr class="unread" data-messageid="1">
+<? foreach($tareas as $tarea): 
+
+	$fecha = $tarea->fecha_hora_creacion;
+	$fecha = fechaLetraDos(substr($fecha,0,10));
+
+	if($tarea->leido == '0'): $l = 'unread'; $estrella = '<i class="fa fa-star"></i>'; else: $l = ''; $estrella = ''; endif;
+
+	switch($tarea->prioridad):
+	case '1':
+		$prioridad = 'BAJA';
+		$class = 'success';
+	break;
+	case '2':
+		$prioridad = 'MEDIA';
+		$class = 'warning';
+	break;
+	case '3':
+		$prioridad = 'ALTA';
+		$class = 'danger';
+	break;
+	endswitch;
+	
+?>
+
+        <tr class="<?= $l ?>" data-messageid="1">
             <td class="inbox-small-cells">
             </td>
             <td class="inbox-small-cells">
-                <i class="fa fa-star"></i>
+                <?= $estrella ?>
             </td>
-            <td class="view-message hidden-xs"> Oscar Vivanco</td>
-            <td class="view-message "> Licencia de construcción de Bosques de Lago</td>
+            <td class="view-message hidden-xs"> 
+	            <?= $s_nombre ?>
+			</td>
+            <td class="view-message "> 
+	            <?= $tarea->asunto ?>
+            </td>
             <td class="view-message inbox-small-cells">
-                 <span class="badge badge-danger">ALTA</span>
+                 <span class="badge badge-<?=$class?>">
+                 	<?=$prioridad?>
+                 </span>
             </td>
-            <td class="view-message text-right"> 16:30 PM </td>
+            <td class="view-message text-right"> 
+	            <?=$fecha?> 
+	        </td>
         </tr>
 
-        <tr data-messageid="3">
-            <td class="inbox-small-cells">
-            </td>
-            <td class="inbox-small-cells">
-            </td>
-            <td class="view-message hidden-xs"> Daniel Bass </td>
-            <td class="view-message"> Pagar la Luz </td>
-			<td class="view-message inbox-small-cells">
-				<span class="badge badge-success">BAJA</span>
-			</td>
-            <td class="view-message text-right"> Octubre 16 </td>
-        </tr>
 
-        <tr data-messageid="3">
-            <td class="inbox-small-cells">
-
-            </td>
-            <td class="inbox-small-cells">
-            </td>
-            <td class="view-message hidden-xs"> Luis Matos </td>
-            <td class="view-message"> Agendar cita con compradores </td>
-			<td class="view-message inbox-small-cells">
-				<span class="badge badge-warning">MEDIA</span>
-			</td>
-            <td class="view-message text-right"> Octubre 19 </td>
-        </tr>
- 
+<? endforeach;	 ?>
+         
     </tbody>
 </table>
+
+
+
+
