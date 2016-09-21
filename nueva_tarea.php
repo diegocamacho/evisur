@@ -38,7 +38,7 @@ include('includes/funciones.php');
     <div class="inbox-form-group">
         <label class="control-label" style="width: 120px;">Asunto:</label>
         <div class="controls" style="margin-left: 125px;">
-	        <input type="text" class="form-control" name="asunto">
+	        <input type="text" class="form-control" name="asunto" id="asunto">
 	    </div>
     </div>
     <!--

@@ -163,7 +163,7 @@ var AppInbox = function () {
                 initFileupload();
                 initWysihtml5();
 
-                $('.inbox-wysihtml5').focus();
+                $('#asunto').focus();
                 Layout.fixContentHeight();
             },
             error: function(xhr, ajaxOptions, thrownError)
