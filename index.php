@@ -1,4 +1,4 @@
-<? 
+<? include('includes/session_ui.php'); 
 include('includes/db.php'); 
 include('includes/funciones.php');
 $menu = isset($_GET['Modulo']) ? $_GET['Modulo']: NULL;
@@ -57,6 +57,7 @@ Mtnic Version: 4.6
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" /> </head>
     <!-- END HEAD -->
+	    <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 
     <body class="page-container-bg-solid">
         <div class="page-wrapper">
@@ -95,7 +96,7 @@ Mtnic Version: 4.6
                     					        </li>
                     					        <li class="divider"> </li>
                     					        <li>
-                    					            <a href="javascript:;" onclick="cambiaFecha2(3)">Nuevo Almacén</a>
+                    					            <a href="javascript:;" onclick="cambiaFecha2(3)">Nuevo Proyecto</a>
                     					        </li>
                     					    </ul>
                     					</div>
@@ -113,14 +114,15 @@ Mtnic Version: 4.6
                                         <li class="dropdown dropdown-user dropdown-dark">
                                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                                 <img alt="" class="img-circle" src="display.jpeg">
-                                                <span class="username username-hide-mobile">Oscar Vivanco</span>
+                                                <span class="username username-hide-mobile"><?=$s_nombre?></span>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-default">
+	                                            <!--
                                                 <li>
                                                     <a href="#">
                                                         <i class="icon-user"></i> Mi Perfil </a>
                                                 </li>
-                                                <!--
+                                                
                                                 <li>
                                                     <a href="app_calendar.html">
                                                         <i class="icon-calendar"></i> My Calendar </a>
@@ -138,18 +140,21 @@ Mtnic Version: 4.6
                                                     </a>
                                                 </li>
                                                 <li class="divider"> </li>
-                                                -->
+                                                
                                                 <li>
-                                                    <a href="#">
+                                                    <a href="login.php">
                                                         <i class="icon-key"></i> Cerrar Sesión </a>
-                                                </li>
+                                                </li>-->
                                             </ul>
                                         </li>
                                         <!-- END USER LOGIN DROPDOWN -->
+                                        <li class="droddown dropdown-separator">
+                                            <span class="separator"></span>
+                                        </li>
                                         <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                                        <li class="dropdown dropdown-extended quick-sidebar-toggler">
-                                            <span class="sr-only">Toggle Quick Sidebar</span>
-                                            <i class="icon-logout"></i>
+                                        <li class="dropdown dropdown-extended">
+                                            <span class="sr-only">Salir</span>
+                                            <a href="login.php"><i class="icon-logout"></i></a>
                                         </li>
                                         <!-- END QUICK SIDEBAR TOGGLER -->
                                     </ul>
@@ -183,10 +188,7 @@ Mtnic Version: 4.6
                                                     <a href="#" class="nav-link  ">Cotizaciones<span class="badge badge-danger">5</span></a>
                                                 </li>
                                                 <li class=" ">
-                                                    <a href="#" class="nav-link  ">Ordenes por Pagar<span class="badge badge-danger">1</span></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="nav-link ">Ordenes Pagadas</a>
+                                                    <a href="#" class="nav-link  ">Ordenes de Compra<span class="badge badge-danger">1</span></a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -197,7 +199,7 @@ Mtnic Version: 4.6
                                             </a>
                                             <ul class="dropdown-menu pull-left">
                                                 <li><a href="#" class="nav-link ">Existencias</a></li>
-                                                <li><a href="#" class="nav-link ">Pedidos</a></li>
+                                                <li><a href="#" class="nav-link ">Ordenes de Compra</a></li>
                                                 <li><a href="#" class="nav-link ">Entradas</a></li>
                                                 <li><a href="#" class="nav-link ">Salidas</a></li>
                                             </ul>
@@ -214,7 +216,7 @@ Mtnic Version: 4.6
                                                 <li><a href="#" class="nav-link ">Proveedores</a></li>
                                                 <li><a href="#" class="nav-link ">Empleados</a></li>
                                                 <li><a href="#" class="nav-link ">Prototipos</a></li>
-                                                <li><a href="#" class="nav-link ">Almacenes</a></li>
+                                                <li><a href="?Modulo=Proyectos" class="nav-link ">Proyectos</a></li>
                                                 <li><a href="?Modulo=Usuarios" class="nav-link ">Usuarios</a></li>
                                             </ul>
                                         </li>
@@ -242,12 +244,18 @@ Mtnic Version: 4.6
 	                            <?
                                 switch($menu){
 							    	
+							    	//Módulos
+							    	case 'Tareas':
+							    	include("tareas.php");	
+							    	break;
+							    	
+							    	//Catálogos
 							    	case 'Usuarios':
 							    	include("usuarios.php");	
 							    	break;
 							    	
-							    	case 'Tareas':
-							    	include("tareas.php");	
+							    	case 'Proyectos':
+							    	include("proyectos.php");	
 							    	break;
 							    			    
 							    	default:
@@ -285,7 +293,7 @@ Mtnic Version: 4.6
 		<script src="assets/global/plugins/excanvas.min.js"></script>
 		<![endif]-->
         <!-- BEGIN CORE PLUGINS -->
-        <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        
         <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>

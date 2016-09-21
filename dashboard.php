@@ -1,7 +1,7 @@
 <div class="container"> 
     <div class="page-content-inner">
 	    
-	    <div class="note note-info"><p> ¡APP Conectada! Validación de Módulos  <br><br><code>- Almacén (No)</code> <br><br><code>- Tareas (No)</code> <br><br><code>- Core (Si)</code></p></div>
+
                                         <div class="mt-content-body">
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-6">
