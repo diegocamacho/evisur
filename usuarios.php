@@ -180,7 +180,7 @@ $q=mysql_query($sql);
 <!-- Loader -->
 		<div class="row oculto" id="load_big">
 			<div class="col-md-12 text-center" >
-				<img src="assets/global/img/Preloader_3.gif" border="0" width="125" />
+				<img src="assets/global/img/ajax-loading.gif" border="0"  />
 			</div>
 		</div>
 <!--Formulario -->

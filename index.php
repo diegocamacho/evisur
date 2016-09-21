@@ -88,15 +88,18 @@ Mtnic Version: 4.6
                     					        <i class="fa fa-angle-down"></i>
                     					    </button>
                     					    <ul class="dropdown-menu pull-right" role="menu">
+	                    					    <?
+													$sql="SELECT * FROM proyectos";
+													$q=mysql_query($sql);
+													while($ft=mysql_fetch_assoc($q)){
+		                    					?>
                     					        <li>
-                    					            <a href="javascript:;" onclick="cambiaFecha2(1)">Conjunto Carrillo</a>
+                    					            <a href="javascript:;" onclick="cambiaProyecto(<?=$ft['id_proyecto']?>)"><?=$ft['proyecto']?></a>
                     					        </li>
-                    					        <li>
-                    					            <a href="javascript:;" onclick="cambiaFecha2(2)">Hacienda Esmeralda</a>
-                    					        </li>
+                    					        <? } ?>
                     					        <li class="divider"> </li>
                     					        <li>
-                    					            <a href="javascript:;" onclick="cambiaFecha2(3)">Nuevo Proyecto</a>
+                    					            <a href="?Modulo=Proyectos">Nuevo Proyecto</a>
                     					        </li>
                     					    </ul>
                     					</div>

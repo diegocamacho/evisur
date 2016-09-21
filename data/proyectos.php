@@ -3,15 +3,15 @@
 include("../includes/db.php");
 include("../includes/funciones.php");
 
-if(!$_GET['id_usuario']){ exit("Error de ID");}
+if(!$_GET['id_proyecto']){ exit("Error de ID");}
 
-$id_usuario=escapar($_GET['id_usuario'],1);
+$id_proyecto=escapar($_GET['id_proyecto'],1);
 
-$sql="SELECT * FROM usuarios WHERE id_usuario=$id_usuario";
+$sql="SELECT * FROM proyectos WHERE id_proyecto=$id_proyecto";
 $query=mysql_query($sql);
 $ft=mysql_fetch_assoc($query);
 if($query){
-	echo $ft['id_tipo_usuario']."|".$ft['nombre']."|".$ft['email']."|".$ft['celular'];
+	echo $ft['proyecto'];
 }else{
 	echo "error";
 }
