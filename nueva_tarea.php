@@ -2,7 +2,7 @@
 include('includes/db.php'); 
 include('includes/funciones.php');
 ?>
-<div class="alert alert-danger oculto" role="alert" id="msg_error"></div>
+<div class="alert alert-danger " style="display: none;" role="alert" id="msg_error"></div>
 <form class="inbox-compose form-horizontal" id="frm_guarda" >
 
 <!--
@@ -41,18 +41,18 @@ include('includes/funciones.php');
 	        <input type="text" class="form-control" name="asunto">
 	    </div>
     </div>
-    
+    <!--
     <div class="inbox-form-group">
         <label class="control-label" style="width: 120px;">Descripción:</label>
         <div class="controls" style="margin-left: 125px;">
 	        <input type="text" class="form-control" name="descripcion">
 	    </div>
     </div>
-    
+    -->
     <div class="inbox-form-group">
         <label class="control-label" style="width: 120px;">Prioridad:</label>
         <div class="controls" style="margin-left: 135px;">
-	        <select class="form-control">
+	        <select class="form-control" name="prioridad">
 			    <option value="1">Baja</option>
 			    <option value="2">Media</option>
 			    <option value="3">Alta</option>
@@ -63,7 +63,7 @@ include('includes/funciones.php');
     <div class="inbox-form-group">
         <label class="control-label" style="width: 120px;">Destinatario:</label>
         <div class="controls" style="margin-left: 135px;">
-			<select id="single" class="form-control select2">
+			<select id="single" class="form-control select2" name="id_destino">
 				<option value="0">Seleccione un usuario</option>
 				<?
 					$sq="SELECT * FROM usuarios WHERE activo=1 ORDER BY nombre ASC";
@@ -77,15 +77,31 @@ include('includes/funciones.php');
     </div>
     
     <div class="inbox-form-group">
-        <label class="control-label" style="width: 120px;">Fecha límite:</label>
-        <div class="controls" style="margin-left: 125px;">
-	        <input type="text" class="form-control" name="subject">
+        <label class="control-label" style="width: 120px;">Proyecto:</label>
+        <div class="controls" style="margin-left: 135px;">
+			<select id="single" class="form-control select2" name="id_proyecto">
+				<option value="0">Seleccione un proyecto</option>
+				<?
+					$sq="SELECT * FROM proyectos WHERE activo=1 ORDER BY proyecto ASC";
+					$q=mysql_query($sq);
+					while($datos=mysql_fetch_assoc($q)){ 
+				?>
+				<option value="<?=$datos['id_proyecto']?>"><?=$datos['proyecto']?></option>
+				<? } ?>
+			</select>                                                											
 	    </div>
     </div>
-    
+
+    <div class="inbox-form-group">
+        <label class="control-label" style="width: 120px;">Fecha límite:</label>
+        <div class="controls" style="margin-left: 125px;">
+	        <input class="form-control fecha" name="fecha_limite" type="text" />
+	    </div>
+    </div>
+
     
     <div class="inbox-form-group">
-        <textarea class="inbox-editor inbox-wysihtml5 form-control" name="message" rows="12"></textarea>
+        <textarea class="inbox-editor inbox-wysihtml5 form-control" name="mensaje" rows="12"></textarea>
     </div>
     <!--
     <div class="inbox-compose-attachment">
@@ -149,15 +165,28 @@ include('includes/funciones.php');
             </td>
         </tr> {% } %} </script>-->
     <div class="inbox-compose-btn">
-        <button class="btn green" onclick="guardaTarea()"><i class="fa fa-check"></i>Enviar</button>
-        <button class="btn default">Cancelar</button>
-        <button class="btn default">Borras</button>
+        <a role="button" class="btn green" onclick="guardaTarea()"><i class="fa fa-check"></i>Enviar</a>
+        <!--<button class="btn default">Cancelar</button>-->
     </div>
 </form>
 <script src="assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
+
 <script>
+$(function(){
+	$('.fecha').datepicker({
+	    orientation: "left",
+	    autoclose: true,
+	    format: 'yyyy-mm-dd',
+	    language: 'es'
+	});
+});
 function guardaTarea(){
 	$('#msg_error').hide('Fast');
+	App.blockUI(
+		{
+            message: 'Enviando...'
+        }
+	);
 
 	var datos=$('#frm_guarda').serialize();
 	$.post('ac/nueva_tarea.php',datos,function(data){
@@ -166,6 +195,7 @@ function guardaTarea(){
 	    }else{
 			$('#msg_error').html(data);
 			$('#msg_error').show('Fast');
+			App.unblockUI();
 	    }
 	});
 }
