@@ -128,7 +128,7 @@ var AppInbox = function () {
     }
 
     var loadCompose = function (el) {
-        var url = 'app_inbox_compose.html';
+        var url = 'nueva_tarea.php';
 
         App.blockUI({
             target: content,
@@ -251,6 +251,10 @@ var AppInbox = function () {
 
             // handle compose btn click
             $('.inbox').on('click', '.compose-btn', function () {
+                loadCompose($(this));
+            });
+
+            $('.componer').on('click', function () {
                 loadCompose($(this));
             });
 

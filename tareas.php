@@ -4,7 +4,7 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="inbox-sidebar">
-                                                        <a href="javascript:;" data-title="Nueva Tarea" class="btn red  btn-block">
+                                                        <a href="javascript:;" data-title="Nueva Tarea" class="btn red  btn-block componer">
                                                             <i class="fa fa-edit"></i> Nueva Tarea </a>
                                                         <ul class="inbox-nav">
                                                             <li class="active">
