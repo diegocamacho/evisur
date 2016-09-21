@@ -2,11 +2,6 @@
 include('includes/db.php'); 
 include('includes/funciones.php');
 $menu = isset($_GET['Modulo']) ? $_GET['Modulo']: NULL;
-if($menu=="Usuarios"){
-	$titulo_modulo="<h1>Usuarios <small>Accesos a la app</small></h1>";
-}elseif(!$menu){
-	$titulo_modulo="<h1>Escritorio <small>Escritorio & estadísticas</small></h1>";
-}
 ?>
 <!DOCTYPE html>
 <!-- 

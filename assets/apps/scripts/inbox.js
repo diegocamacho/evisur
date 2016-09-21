@@ -61,7 +61,6 @@ var AppInbox = function () {
         var url = 'app_inbox_view.html';
 
         App.blockUI({
-            target: content,
             overlayColor: 'none',
             animate: true
         });
@@ -100,7 +99,14 @@ var AppInbox = function () {
 
     var initWysihtml5 = function () {
         $('.inbox-wysihtml5').wysihtml5({
-            "stylesheets": ["../assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
+            "stylesheets": ["assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css"],
+            "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+			"emphasis": true, //Italics, bold, etc. Default true
+			"lists": false, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+			"html": false, //Button which allows you to edit the generated HTML. Default false
+			"link": false, //Button to insert a link. Default true
+			"image": false, //Button to insert an image. Default true,
+			"color": true //Button to change color of font  
         });
     }
 
