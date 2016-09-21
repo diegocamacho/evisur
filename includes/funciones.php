@@ -125,6 +125,52 @@ function fechaLetra($fecha){
 	return $dia." ".$mest." ".$anio;
 }
 
+function fechaLetraAlt($fecha){
+    
+	list($anio,$mes,$dia)=explode("-",$fecha); 
+	switch($mes){
+	case 1:
+	$mest="ENE";
+	break;
+	case 2:
+	$mest="FEB";
+	break;
+	case 3:
+	$mest="MAR";
+	break;
+	case 4:
+	$mest="ABR";
+	break;
+	case 5:
+	$mest="MAY";
+	break;
+	case 6:
+	$mest="JUN";
+	break;
+	case 7:
+	$mest="JUL";
+	break;
+	case 8:
+	$mest="AGO";
+	break;
+	case 9:
+	$mest="SEP";
+	break;
+	case 10:
+	$mest="OCT";
+	break;
+	case 11:
+	$mest="NOV";
+	break;
+	case 12:
+	$mest="DIC";
+	break;
+	
+	}
+	$dia=(string)(int)$dia;
+	return $dia." ".$mest;
+}
+
 function fechaLetraDos($fecha){
     
 	list($anio,$mes,$dia)=explode("-",$fecha); 

@@ -1,8 +1,4 @@
 <?
-include('includes/session.php');
-include('includes/db.php');
-include('includes/funciones.php');
-
 $tipo = $_GET['tipo']; //Recibidas Enviadas;
 
 $sql = "SELECT*FROM tareas WHERE id_destino = $s_id_usuario AND activo = 1 AND terminado_creador = 0 AND terminado_destino = 0 ORDER BY leido ASC, fecha_hora_limite DESC";
@@ -41,6 +37,8 @@ endwhile;
         </tr>
     </thead>
     <tbody>
+	    
+	    
 <? foreach($tareas as $tarea): 
 
 	$fecha = $tarea->fecha_hora_creacion;
@@ -61,8 +59,7 @@ endwhile;
 		$prioridad = 'ALTA';
 		$class = 'danger';
 	break;
-	endswitch;
-	
+	endswitch; 
 ?>
 
         <tr class="<?= $l ?>" data-messageid="1">
@@ -88,7 +85,7 @@ endwhile;
         </tr>
 
 
-<? endforeach;	 ?>
+<? endforeach; ?>
          
     </tbody>
 </table>

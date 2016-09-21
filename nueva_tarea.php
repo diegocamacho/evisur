@@ -80,7 +80,7 @@ include('includes/funciones.php');
         <label class="control-label" style="width: 120px;">Proyecto:</label>
         <div class="controls" style="margin-left: 135px;">
 			<select id="single" class="form-control select2" name="id_proyecto">
-				<option value="0">Seleccione un proyecto</option>
+				<option value="0">Sin Proyecto</option>
 				<?
 					$sq="SELECT * FROM proyectos WHERE activo=1 ORDER BY proyecto ASC";
 					$q=mysql_query($sq);

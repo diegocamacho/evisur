@@ -3,7 +3,7 @@ var AppInbox = function () {
     var content = $('.inbox-content');
     var listListing = '';
 
-    var loadInbox = function (el, name) {
+/*    var loadInbox = function (el, name) {
         var url = 'app_inbox_inbox.php';
         var title = el.attr('data-title');
         var tipo = el.attr('data-title');
@@ -55,7 +55,7 @@ var AppInbox = function () {
             });
         });
     }
-
+*/
 
     var loadMessage = function (el, name, resetMenu) {
         var url = 'app_inbox_view.html';
@@ -258,45 +258,11 @@ var AppInbox = function () {
                 loadCompose($(this));
             });
 
-            // handle discard btn
-            $('.inbox').on('click', '.inbox-discard-btn', function(e) {
-                e.preventDefault();
-                loadInbox($(this), listListing);
-            });
-
-            // handle reply and forward button click
-            $('.inbox').on('click', '.reply-btn', function () {
-                loadReply($(this));
-            });
-
-            // handle view message
-            $('.inbox').on('click', '.view-message', function () {
-                loadMessage($(this));
-            });
-
-            // handle inbox listing
-            $('.inbox-nav > li > a').click(function () {
-                loadInbox($(this), 'inbox');
-            });
-
-            //handle compose/reply cc input toggle
-            $('.inbox-content').on('click', '.mail-to .inbox-cc', function () {
-                handleCCInput();
-            });
-
-            //handle compose/reply bcc input toggle
-            $('.inbox-content').on('click', '.mail-to .inbox-bcc', function () {
-                handleBCCInput();
-            });
 
             //handle loading content based on URL parameter
-            if (App.getURLParameter("a") === "view") {
-                loadMessage();
-            } else if (App.getURLParameter("a") === "compose") {
+           if (App.getURLParameter("a") === "compose") {
                 loadCompose();
-            } else {
-               $('.inbox-nav > li:first > a').click();
-            }
+            } 
 
         }
 
