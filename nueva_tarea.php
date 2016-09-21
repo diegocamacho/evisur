@@ -1,4 +1,11 @@
-<form class="inbox-compose form-horizontal" id="fileupload" action="#" method="POST" enctype="multipart/form-data">
+<? 
+include('includes/db.php'); 
+include('includes/funciones.php');
+?>
+<div class="alert alert-danger oculto" role="alert" id="msg_error"></div>
+<form class="inbox-compose form-horizontal" id="frm_guarda" >
+
+<!--
     <div class="inbox-compose-btn">
         <button class="btn green">
             <i class="fa fa-check"></i>Send</button>
@@ -26,26 +33,74 @@
         <label class="control-label">Bcc:</label>
         <div class="controls controls-bcc">
             <input type="text" name="bcc" class="form-control"> </div>
-    </div>
+    </div>-->
+    
     <div class="inbox-form-group">
-        <label class="control-label">Subject:</label>
-        <div class="controls">
-            <input type="text" class="form-control" name="subject"> </div>
+        <label class="control-label" style="width: 120px;">Asunto:</label>
+        <div class="controls" style="margin-left: 125px;">
+	        <input type="text" class="form-control" name="asunto">
+	    </div>
     </div>
+    
+    <div class="inbox-form-group">
+        <label class="control-label" style="width: 120px;">Descripción:</label>
+        <div class="controls" style="margin-left: 125px;">
+	        <input type="text" class="form-control" name="descripcion">
+	    </div>
+    </div>
+    
+    <div class="inbox-form-group">
+        <label class="control-label" style="width: 120px;">Prioridad:</label>
+        <div class="controls" style="margin-left: 135px;">
+	        <select class="form-control">
+			    <option value="1">Baja</option>
+			    <option value="2">Media</option>
+			    <option value="3">Alta</option>
+			</select>
+	    </div>
+    </div>
+    
+    <div class="inbox-form-group">
+        <label class="control-label" style="width: 120px;">Destinatario:</label>
+        <div class="controls" style="margin-left: 135px;">
+			<select id="single" class="form-control select2">
+				<option value="0">Seleccione un usuario</option>
+				<?
+					$sq="SELECT * FROM usuarios WHERE activo=1 ORDER BY nombre ASC";
+					$q=mysql_query($sq);
+					while($datos=mysql_fetch_assoc($q)){ 
+				?>
+				<option value="<?=$datos['id_usuario']?>"><?=$datos['nombre']?></option>
+				<? } ?>
+			</select>                                                											
+	    </div>
+    </div>
+    
+    <div class="inbox-form-group">
+        <label class="control-label" style="width: 120px;">Fecha límite:</label>
+        <div class="controls" style="margin-left: 125px;">
+	        <input type="text" class="form-control" name="subject">
+	    </div>
+    </div>
+    
+    
     <div class="inbox-form-group">
         <textarea class="inbox-editor inbox-wysihtml5 form-control" name="message" rows="12"></textarea>
     </div>
+    <!--
     <div class="inbox-compose-attachment">
-        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload --
         <span class="btn green btn-outline fileinput-button">
             <i class="fa fa-plus"></i>
             <span> Add files... </span>
             <input type="file" name="files[]" multiple> </span>
-        <!-- The table listing the files available for upload/download -->
+        <!-- The table listing the files available for upload/download --
         <table role="presentation" class="table table-striped margin-top-10">
             <tbody class="files"> </tbody>
         </table>
     </div>
+    -->
+    <!--
     <script id="template-upload" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
         <tr class="template-upload fade">
             <td class="name" width="30%">
@@ -69,7 +124,7 @@
                     <span>Cancel</span>
                 </button> {% } %}</td>
         </tr> {% } %} </script>
-    <!-- The template to display files available for download -->
+    <!-- The template to display files available for download --
     <script id="template-download" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
         <tr class="template-download fade"> {% if (file.error) { %}
             <td class="name" width="30%">
@@ -92,11 +147,26 @@
                     <i class="fa fa-times"></i>
                 </button>
             </td>
-        </tr> {% } %} </script>
+        </tr> {% } %} </script>-->
     <div class="inbox-compose-btn">
-        <button class="btn green">
-            <i class="fa fa-check"></i>Send</button>
-        <button class="btn default">Discard</button>
-        <button class="btn default">Draft</button>
+        <button class="btn green" onclick="guardaTarea()"><i class="fa fa-check"></i>Enviar</button>
+        <button class="btn default">Cancelar</button>
+        <button class="btn default">Borras</button>
     </div>
 </form>
+<script src="assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
+<script>
+function guardaTarea(){
+	$('#msg_error').hide('Fast');
+
+	var datos=$('#frm_guarda').serialize();
+	$.post('ac/nueva_tarea.php',datos,function(data){
+	    if(data==1){
+			window.open("?Modulo=Tareas", "_self");
+	    }else{
+			$('#msg_error').html(data);
+			$('#msg_error').show('Fast');
+	    }
+	});
+}
+</script>
