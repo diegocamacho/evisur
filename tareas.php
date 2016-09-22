@@ -1,6 +1,6 @@
 <?
 $tipo = $_GET['tipo'];
-
+$tarea = $_GET['tarea'];
 switch($tipo):
 	case 'enviadas';
 		$incluir = 'enviadas.php';
@@ -11,6 +11,13 @@ switch($tipo):
 		$incluir = 'recibidas.php';
 		$activoRecibidas = 'active';
 endswitch;
+
+
+if(is_numeric($tarea)):
+
+	$incluir = 'ver_tarea.php';
+
+endif;
 
 $sql = "SELECT COUNT(*) as cuantos FROM tareas WHERE id_destino = $s_id_usuario AND activo = 1 AND terminado_creador = 0 AND terminado_destino = 0";
 $q = mysql_query($sql);
@@ -28,10 +35,10 @@ $q = mysql_query($sql);
 $usuario = array();
 
 while($datos = mysql_fetch_object($q)):
-	
 	$usuario[] = $datos;
-
 endwhile;
+
+//$incluir = 'ver_tarea.php';
 
 ?>
 
@@ -59,16 +66,23 @@ endwhile;
                                                             </li>
                                                         </ul>
                                                         <ul class="inbox-contacts">
-                                                            <li class="divider margin-bottom-30"></li>
+                                                            <li class="divider"></li>
+
+<p>
+<div class="text-center"><span class="item-label" style="color:#545454 !important;">Último Acceso</span></div>
+</p>
+
 <? foreach($usuario as $user): ?>
                                                             <li>
                                                                 <a href="javascript:;">
                                                                     <img class="contact-pic" src="assets/pages/media/users/avatar6.jpg">
                                                                     <span class="contact-name">
-                                                                    	<?= mayus($user->nombre) ?>
+                                                                    	<?= mayus($user->nombre) ?> 
                                                                     </span>
                                                                     <span class="contact-status bg-green"></span>
+                                                                    <span class="badge badge-info">hoy</span>
                                                                 </a>
+                                                                
                                                             </li>                                                            
 <? endforeach; ?>
                                                         </ul>

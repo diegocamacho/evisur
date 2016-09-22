@@ -114,10 +114,8 @@ endwhile;
 				
 
 			?>
-			
-			        <tr class="<?= $l ?>" data-messageid="1">
-			            <td class="inbox-small-cells">
-			            </td>
+			        <tr onclick="window.location = '?Modulo=Tareas&tarea=<?= $tarea->id_tarea ?>'" class="<?= $l ?>">
+
 			            <td class="inbox-small-cells">
 			                <?= $estrella ?>
 			            </td>
@@ -135,6 +133,7 @@ endwhile;
 			            <td class="view-message text-right"> 
 				            <?= $mostrar_fecha ?> 
 				        </td>
+
 			        </tr>
 			
 			

@@ -82,7 +82,7 @@ endwhile;
 				            <?= mayus($tarea->nombre) ?>
 						</td>
 			            <td class="view-message "> 
-				            <?= $tarea->asunto ?>
+				            [Bosques del Lago] <?= $tarea->asunto ?>
 			            </td>
 			            <td class="view-message inbox-small-cells">
 			                 <span class="badge badge-<?= $class ?>">
