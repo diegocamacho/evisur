@@ -36,7 +36,7 @@ while($datos = mysql_fetch_object($q)):
 endwhile; 
 ?>
 
-<div class="col-md-9">
+<div class="col-md-9"> 
 	<div class="inbox-body">
 		<div class="row">
 			<div class="col-md-8">
