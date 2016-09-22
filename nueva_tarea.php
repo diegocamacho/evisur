@@ -221,8 +221,6 @@ function guardaTarea(){
 	);
 	
 	var datos=$('#fileupload').serialize();
-	alert(datos);
-	return false;
 	$.post('ac/nueva_tarea.php',datos,function(data){
 	    if(data==1){
 			window.open("?Modulo=Tareas", "_self");
