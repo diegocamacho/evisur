@@ -117,53 +117,77 @@ include('includes/funciones.php');
             <tbody class="files"> </tbody>
         </table>
     </div>
+    
+    
+    
+    
+    <!-- The blueimp Gallery widget -->
+	<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+	    <div class="slides"> </div>
+	    <h3 class="title"></h3>
+	    <a class="prev"> ‹ </a>
+	    <a class="next"> › </a>
+	    <a class="close white"> </a>
+	    <a class="play-pause"> </a>
+	    <ol class="indicator"> </ol>
+	</div>
+    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
     <script id="template-upload" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
-        <tr class="template-upload fade">
-            <td class="name" width="30%">
-                <span>{%=file.name%}</span>
-            </td>
-            <td class="size" width="40%">
-                <span>{%=o.formatFileSize(file.size)%}</span>
-            </td> {% if (file.error) { %}
-            <td class="error" width="20%" colspan="2">
-                <span class="label label-danger">Error</span> {%=file.error%}</td> {% } else if (o.files.valid && !i) { %}
-            <td>
-                <p class="size">{%=o.formatFileSize(file.size)%}</p>
-                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
-                </div>
-            </td> {% } else { %}
-            <td colspan="2"></td> {% } %}
-            <td class="cancel" width="10%" align="right">{% if (!i) { %}
-                <button class="btn btn-sm red cancel">
-                    <i class="fa fa-ban"></i>
-                    <span>Cancel</span>
-                </button> {% } %}</td>
-        </tr> {% } %} </script>
-    <!-- The template to display files available for download -->
-    <script id="template-download" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
-        <tr class="template-download fade"> {% if (file.error) { %}
-            <td class="name" width="30%">
-                <span>{%=file.name%}</span>
-            </td>
-            <td class="size" width="40%">
-                <span>{%=o.formatFileSize(file.size)%}</span>
-            </td>
-            <td class="error" width="30%" colspan="2">
-                <span class="label label-danger">Error</span> {%=file.error%}</td> {% } else { %}
-            <td class="name" width="30%">
-                <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
-            </td>
-            <td class="size" width="40%">
-                <span>{%=o.formatFileSize(file.size)%}</span>
-            </td>
-            <td colspan="2"></td> {% } %}
-            <td class="delete" width="10%" align="right">
-                <button class="btn default btn-sm" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}" {% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
-                    <i class="fa fa-times"></i>
-                </button>
-            </td>
-        </tr> {% } %} </script>
+    	<tr class="template-upload fade">
+		    <td>
+		        <span class="preview"></span>
+		    </td>
+		    <td>
+		        <p class="name">{%=file.name%}</p>
+		        <strong class="error text-danger label label-danger"></strong>
+		    </td>
+		    <td>
+		        <p class="size">Procesando...</p>
+		        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+		            <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+		        </div>
+		    </td>
+		    <td> {% if (!i && !o.options.autoUpload) { %}
+		        <button class="btn blue start" disabled>
+		            <i class="fa fa-upload"></i>
+		            <span>Subir</span>
+		        </button> {% } %} {% if (!i) { %}
+		        <button class="btn red cancel">
+		            <i class="fa fa-ban"></i>
+		            <!--<span>Cancelar</span>-->
+		        </button> {% } %} </td>
+		</tr> {% } %} </script>
+        <!-- The template to display files available for download -->
+		<script id="template-download" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
+		    <tr class="template-download fade">
+		        <td>
+			        <input type="hidden" name="archivos[]" value="{%=file.name%}" />
+		            <span class="preview"> {% if (file.thumbnailUrl) { %}
+		                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery>
+		                    <img src="{%=file.thumbnailUrl%}">
+		                </a> {% } %} </span>
+		        </td>
+		        <td>
+		            <p class="name"> {% if (file.url) { %}
+		                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl? 'data-gallery': ''%}>{%=file.name%}</a> {% } else { %}
+		                <span>{%=file.name%}</span> {% } %} </p> {% if (file.error) { %}
+		            <div>
+		                <span class="label label-danger">Error</span> {%=file.error%}</div> {% } %} </td>
+		        <td>
+		            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+		        </td>
+		        <td> {% if (file.deleteUrl) { %}
+		            <button class="btn red delete btn-sm" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'
+		                {% } %}>
+		                <i class="fa fa-trash-o"></i>
+		                <span>Borrar</span>
+		            </button>
+		            {% } else { %}
+		            <button class="btn yellow cancel btn-sm">
+		                <i class="fa fa-ban"></i>
+		                <span>Cancelar</span>
+		            </button> {% } %} </td>
+		    </tr> {% } %} </script>
 
     
     
@@ -195,8 +219,10 @@ function guardaTarea(){
             message: 'Enviando...'
         }
 	);
-
+	
 	var datos=$('#fileupload').serialize();
+	alert(datos);
+	return false;
 	$.post('ac/nueva_tarea.php',datos,function(data){
 	    if(data==1){
 			window.open("?Modulo=Tareas", "_self");
