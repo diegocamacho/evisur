@@ -134,6 +134,7 @@ var AppInbox = function () {
                 $('.inbox-nav > li.active').removeClass('active');
                 $('.inbox-header > h1').text('Nueva Tarea');
                 $('#subtitulo').hide();
+                //Aquiba algo
 
                 loading.hide();
                 content.html(res);
