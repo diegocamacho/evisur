@@ -156,7 +156,8 @@ var AppInbox = function () {
                 toggleButton(el);
 
                 $('.inbox-nav > li.active').removeClass('active');
-                $('.inbox-header > h1').text('Compose');
+                $('.inbox-header > h1').text('Nueva Tarea');
+                $('#subtitulo').hide();
 
                 content.html(res);
 
