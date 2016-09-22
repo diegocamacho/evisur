@@ -64,7 +64,7 @@ include('includes/funciones.php');
         <label class="control-label" style="width: 120px;">Destinatario:</label>
         <div class="controls" style="margin-left: 135px;">
 			<select id="single" class="form-control select2" name="id_destino">
-				<option value="0">Seleccione un usuario</option>
+				<option selected disabled>Seleccione un usuario</option>
 				<?
 					$sq="SELECT * FROM usuarios WHERE activo=1 ORDER BY nombre ASC";
 					$q=mysql_query($sq);
@@ -101,7 +101,7 @@ include('includes/funciones.php');
 
     
     <div class="inbox-form-group">
-        <textarea class="inbox-editor inbox-wysihtml5 form-control" name="mensaje" rows="12"></textarea>
+        <textarea class="inbox-editor  form-control" name="mensaje" rows="12" placeholder="Descripción de la tarea"></textarea>
     </div>
     <!--
     <div class="inbox-compose-attachment">
@@ -179,6 +179,7 @@ $(function(){
 	    format: 'yyyy-mm-dd',
 	    language: 'es'
 	});
+	
 });
 function guardaTarea(){
 	$('#msg_error').hide('Fast');

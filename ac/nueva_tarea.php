@@ -9,7 +9,7 @@ extract($_POST);
 if(!$asunto) exit("Escriba el asunto de la tarea.");
 if(!$prioridad) exit("Seleccione la prioridad de la tarea.");
 if(!$id_destino) exit("Seleccione el usuario al que se le va asignar la tarea.");
-if(!$id_proyecto) exit("Seleccione el proyecto al que va afectar la tarea.");
+//if(!$id_proyecto) exit("Seleccione el proyecto al que va afectar la tarea.");
 if(!$fecha_limite) exit("Seleccione la fecha límite de entrega.");
 if(!$mensaje) exit("Escriba la tarea a realizar.");
 
