@@ -1,7 +1,7 @@
 <? 
 extract($_GET);
 
-
+$id_tarea = $tarea;
 $sql = "
 SELECT tareas.*,proyectos.proyecto 
 FROM tareas 
@@ -11,6 +11,14 @@ WHERE tareas.id_tarea = $tarea AND (id_remite = $s_id_usuario OR id_destino = $s
 
 $q = mysql_query($sql);
 $tarea = mysql_fetch_object($q);
+
+if($s_id_usuario==$tarea->id_remite):
+	$soyremite = 1;
+	$soydestino = 0;
+else:
+	$soyremite = 0;
+	$soydestino = 1;
+endif;
 
 if($tarea->proyecto): 
 	$proyecto = '['.$tarea->proyecto.']'; 
@@ -50,7 +58,98 @@ $sql = "SELECT*FROM usuarios WHERE id_usuario = $id_remite";
 $q = mysql_query($sql);
 $remitente = mysql_fetch_object($q);
 
+$t_creador = $tarea->terminado_creador;
+$t_destino = $tarea->terminado_destino;
+$fecha_limite = $tarea->fecha_limite;
+$fecha_finalizada = $tarea->fecha_hora_terminado;
 
+
+if($fecha_finalizada):
+
+	$fecha_fin = explode(' ', $fecha_finalizada);
+	$hora_fin = substr($fecha_fin[1],0,5);
+	$f_fin = explode('-', $fecha_fin[0]);
+	
+	$dia_fin = $f_fin[2];
+	$mes_fin = soloMes($f_fin[1]);
+	$anio_fin = $f_fin[0];
+		
+	if( ($t_creador==1) && ($t_destino==1) ):
+
+		$string_fecha_fin = "Tarea completada el $dia_fin de $mes_fin de $anio_fin a las $hora_fin";
+		$color = 'success';
+		$msg = $string_fecha_fin;
+		$btn_compeltada = 'none';
+	endif;
+
+	if( ($t_creador==0) && ($t_destino==1) ):
+		$string_fecha_fin = "Tarea enviada a revisión el $dia_fin de $mes_fin de $anio_fin a las $hora_fin";
+		$color = 'success';
+		$msg = $string_fecha_fin;
+		$btn_compeltada = 'none';
+	endif;
+
+else:
+	
+	$dias_restantes = dias_restantes($tarea->fecha_limite);
+	
+	
+	$btn_compeltada = 'inline';
+	
+	
+	$dia_no = 'días';
+	$color = 'danger';
+	
+	if($dias_restantes==1):
+		$color = 'danger';
+		$dia_no = 'día';
+	elseif($dias_restantes==2):
+		$color = 'warning';
+	elseif($dias_restantes>2):
+		$color = 'info';
+	endif;
+	
+	$f_lim = explode('-', $tarea->fecha_limite);
+	$dia_lim = $f_lim[2];
+	$mes_lim = soloMes($f_lim[1]);
+	$anio_lim = $f_lim[0];
+	
+	$hoy = date('Y-m-d');
+	$fecha_limite = $tarea->fecha_limite;
+	
+	if(strtotime($hoy)<strtotime($fecha_limite)):
+		$en = "en $dias_restantes $dia_no";
+	elseif(date('Y-m-d')==$tarea->fecha_limite):
+		$en = "Hoy";			
+	else:
+		$dias_restantes = abs($dias_restantes);
+		if($dias_restantes==1):
+			$en = "Atraso de $dias_restantes día";
+		else:
+			$en = "Atraso de $dias_restantes días";
+		endif;
+	endif;
+	
+	$msg = "Fecha de Entrega: $dia_lim de $mes_lim de $anio_lim ($en)";
+	
+endif;
+
+
+if($soyremite==1):
+
+	$btn_compeltada = 'none';
+	
+endif;
+
+
+
+function dias_restantes($fecha_final) {
+	$fecha_actual = date("Y-m-d");
+	$s = strtotime($fecha_final)-strtotime($fecha_actual);
+	$d = intval($s/86400);
+	$diferencia = $d;
+	return $diferencia;
+}
 
 ?>
 
@@ -91,13 +190,38 @@ color: #666 !important;
 		</div>
 
 		<div class="inbox-view">
-			<div class="alert alert-info">
-				Fecha de Entrega: </strong> 13 de Octubre de 2016 (en 16 días)
+			<div class="alert alert-<?= $color ?>">
+				<?= $msg ?>
 			</div>                                                            
 		    <p style="font-size: 16px;line-height: 30px"><?= $tarea->descripcion ?> 
 		    </p>
 		</div>
+		
+		<p style="display:<?=$btn_compeltada?>"><br/><a role="button" id="completada" class="btn green"><i class="fa fa-check"></i>Marcar como Completada</a></p>
+		
+<script>
 
+$(function() {
+
+	$('#completada').click(function() {
+		
+		$.get('ac/marcar_completada.php','id_tarea=<?=$id_tarea?>',function(data) {
+
+			if(data==1){
+				window.location = 'index.php?Modulo=Tareas';
+			}else{
+				alert(data);
+			}
+			
+		});
+		
+	
+	});
+
+});			
+			
+</script>
+<!--
 		<hr>
 		
 		<div class="inbox-attached">
@@ -111,16 +235,17 @@ color: #666 !important;
 				</strong>
 		    </div>
 		</div>
-		
+		-->
 <!-- empiezan comentarios -->
 
 <hr>
+<!--
 		<div class="">
 		    <div class="portlet-title">
 		        <div class="caption caption-md">
 		            <i class="icon-bar-chart font-dark hide"></i>
 		            <span class="caption-subject font-green-steel bold uppercase">Comentarios</span>
-		            <span class="caption-helper"><!--HELPER--></span>
+		            <span class="caption-helper"></span>
 		        </div>
 		    </div>
 		    <div class="portlet-body">
@@ -135,7 +260,7 @@ color: #666 !important;
 		                            <span class="item-label">11 Oct 16 · 16:40</span>
 		                        </div>
 		                        <span class="item-status">
-		                            <span class="badge badge-empty badge-danger"></span><!--status--></span>
+		                            <span class="badge badge-empty badge-danger"></span></span>
 		                    </div>
 		                    <div class="item-body"> Tarea leída por Sharon Vivanco. </div>
 		                </div>
@@ -150,7 +275,7 @@ color: #666 !important;
 		                            <span class="item-label">3 hrs ago</span>
 		                        </div>
 		                        <span class="item-status">
-		                            <span class="badge badge-empty badge-success"></span> <!--status--></span>
+		                            <span class="badge badge-empty badge-success"></span> </span>
 		                    </div>
 		                    <div class="item-body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </div>
 		                </div>
@@ -162,7 +287,7 @@ color: #666 !important;
 		                            <span class="item-label">5 hrs ago</span>
 		                        </div>
 		                        <span class="item-status">
-		                            <span class="badge badge-empty badge-warning"></span><!--status--></span>
+		                            <span class="badge badge-empty badge-warning"></span></span>
 		                    </div>
 		                    <div class="item-body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat tincidunt ut laoreet. </div>
 		                </div>
@@ -175,7 +300,7 @@ color: #666 !important;
 		                            <span class="item-label">hace 10 minutos</span>
 		                        </div>
 		                        <span class="item-status">
-		                            <span class="badge badge-empty badge-danger"></span><!--status--></span>
+		                            <span class="badge badge-empty badge-danger"></span></span>
 		                    </div>
 		                    <div class="item-body"> Tarea reabierta por Oscar Vivanco. </div>
 		                </div>
@@ -201,7 +326,7 @@ color: #666 !important;
 
 	</div>
 </div>
-                                                
+-->                                      
                                                 
 <!-- Termina inbox body y col-md-9 -->		
 	</div>
