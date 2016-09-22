@@ -45,7 +45,7 @@ endwhile;
 				</div>
 			</div>
 			<div class="col-md-4" style="margin-top: 13px; text-align: right">
-				<small style="font-weight: 100;font-size: 14px;color:gray"><?= $sub ?></small>
+				<small id="subtitulo" style="font-weight: 100;font-size: 14px;color:gray"><?= $sub ?></small>
 			</div>
 		</div>
 
