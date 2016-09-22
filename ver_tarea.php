@@ -1,94 +1,208 @@
-<div class="inbox-header inbox-view-header">
-    <h1 class="pull-left">New server for datacenter needed
-        <a href="javascript:;"> Inbox </a>
-    </h1>
-    <div class="pull-right">
-        <a href="javascript:;" class="btn btn-icon-only dark btn-outline">
-            <i class="fa fa-print"></i>
-        </a>
-    </div>
-</div>
-<div class="inbox-view-info">
-    <div class="row">
-        <div class="col-md-7">
-            <img src="../assets/pages/media/users/avatar1.jpg" class="inbox-author">
-            <span class="sbold">Petronas IT </span>
-            <span>&#60;support@go.com&#62; </span> to
-            <span class="sbold"> me </span> on 08:20PM 29 JAN 2013 </div>
-        <div class="col-md-5 inbox-info-btn">
-            <div class="btn-group">
-                <button data-messageid="23" class="btn green reply-btn">
-                    <i class="fa fa-reply"></i> Reply
-                    <i class="fa fa-angle-down"></i>
-                </button>
-                <ul class="dropdown-menu pull-right">
-                    <li>
-                        <a href="javascript:;" data-messageid="23" class="reply-btn">
-                            <i class="fa fa-reply"></i> Reply </a>
-                    </li>
-                    <li>
-                        <a href="javascript:;">
-                            <i class="fa fa-arrow-right reply-btn"></i> Forward </a>
-                    </li>
-                    <li>
-                        <a href="javascript:;">
-                            <i class="fa fa-print"></i> Print </a>
-                    </li>
-                    <li class="divider"> </li>
-                    <li>
-                        <a href="javascript:;">
-                            <i class="fa fa-ban"></i> Spam </a>
-                    </li>
-                    <li>
-                        <a href="javascript:;">
-                            <i class="fa fa-trash-o"></i> Delete </a>
-                    </li>
-                    <li>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="inbox-view">
-    <p>
-        <strong>Lorem ipsum</strong>dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl
-        ut aliquip ex ea commodo consequat. </p>
-    <p> Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et
-        <a href="javascript:;"> iusto odio dignissim </a> qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi
-        non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. </p>
-    <p> Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. </p>
-    <p> Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem
-        modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum. </p>
-</div>
+<? 
+extract($_GET);
+
+
+$sql = "
+SELECT tareas.*,proyectos.proyecto 
+FROM tareas 
+LEFT JOIN proyectos ON proyectos.id_proyecto = tareas.id_proyecto
+WHERE tareas.id_tarea = $tarea AND (id_remite = $s_id_usuario OR id_destino = $s_id_usuario)
+";
+
+$q = mysql_query($sql);
+$tarea = mysql_fetch_object($q);
+
+if($tarea->proyecto): 
+	$proyecto = '['.$tarea->proyecto.']'; 
+endif;
+
+switch($tarea->prioridad):
+case '1':
+	$prioridad = 'BAJA';
+	$class = 'success';
+break;
+case '2':
+	$prioridad = 'MEDIA';
+	$class = 'warning';
+break;
+case '3':
+	$prioridad = 'ALTA';
+	$class = 'danger';
+break;
+endswitch; 
+
+$fecha_c = $tarea->fecha_hora_creacion;
+$fecha_c = explode(' ', $fecha_c);
+
+$hora = substr($fecha_c[1],0,5);
+$f_ex = explode('-', $fecha_c[0]);
+
+
+$dia = $f_ex[2];
+$mes = soloMes($f_ex[1]);
+$anio = $f_ex[0];
+
+$string_fecha = "$dia de $mes de $anio";
+
+$id_remite = $tarea->id_remite;
+
+$sql = "SELECT*FROM usuarios WHERE id_usuario = $id_remite";
+$q = mysql_query($sql);
+$remitente = mysql_fetch_object($q);
+
+
+
+?>
+
+<style>
+.item-label{
+color: #96a5aa !important;
+font-size: 13px !important;
+}
+.item-body{
+color: #666 !important;
+}
+</style>
+<div class="col-md-9"> 
+	<div class="inbox-body">
+		<div class="inbox-header inbox-view-header">
+			<h1 class="pull-left">
+				<?= $proyecto ?> <?= $tarea->asunto ?>
+			<span class="badge badge-<?= $class ?>">
+				<?= $prioridad ?>
+			</span>
+			</h1>
+			<div class="pull-right">
+	        	<!--
+		        <a href="javascript:;" class="btn btn-icon-only dark btn-outline"><i class="fa fa-print"></i></a>
+				-->
+	    	</div>
+		</div>
+
+
+		<div class="inbox-view-info">
+		    <div class="row">
+		        <div class="col-md-12">
+		            <img src="http://localhost/evisur/assets/pages/media/users/avatar6.jpg" class="inbox-author">
+		            Por <span class="sbold"><?= mayus($remitente->nombre) ?> </span> · 
+		            <span class="sbold"><?= $string_fecha ?></span> a las <?= $hora ?>
+		        </div>
+		    </div>
+		</div>
+
+		<div class="inbox-view">
+			<div class="alert alert-info">
+				Fecha de Entrega: </strong> 13 de Octubre de 2016 (en 16 días)
+			</div>                                                            
+		    <p style="font-size: 16px;line-height: 30px"><?= $tarea->descripcion ?> 
+		    </p>
+		</div>
+
+		<hr>
+		
+		<div class="inbox-attached">
+		    <div class="margin-bottom-10">
+		        <span class="item-body">Archivos adjuntos: </span>
+		    </div>
+		    <div>
+				<strong>
+					<a href="javascript:;">DOCUMENTO EN ZIP (1).docx</a><br/>
+					<a href="javascript:;">Balanza VIVANCO.xlsx</a>
+				</strong>
+		    </div>
+		</div>
+		
+<!-- empiezan comentarios -->
+
 <hr>
-<div class="inbox-attached">
-    <div class="margin-bottom-15">
-        <span>attachments — </span>
-        <a href="javascript:;">Download all attachments </a>
-        <a href="javascript:;">View all images </a>
-    </div>
-    <div class="margin-bottom-25">
-        <img src="../assets/pages/media/gallery/image4.jpg">
-        <div>
-            <strong>image4.jpg</strong>
-            <span>173K </span>
-            <a href="javascript:;">View </a>
-            <a href="javascript:;">Download </a>
-        </div>
-        <div class="margin-bottom-25">
-            <img src="../assets/pages/media/gallery/image3.jpg">
-            <div>
-                <strong>IMAG0705.jpg</strong>
-                <span>14K </span>
-                <a href="javascript:;">View </a>
-                <a href="javascript:;">Download </a>
-            </div>
-        </div>
-        <div class="margin-bottom-25">
-            <img src="../assets/pages/media/gallery/image5.jpg">
-            <div>
-                <strong>test.jpg</strong>
-                <span>132K </span>
-                <a href="javascript:;">View </a>
-                <a href="javascript:;">Download </a>
-            </div>
-        </div>
+		<div class="">
+		    <div class="portlet-title">
+		        <div class="caption caption-md">
+		            <i class="icon-bar-chart font-dark hide"></i>
+		            <span class="caption-subject font-green-steel bold uppercase">Comentarios</span>
+		            <span class="caption-helper"><!--HELPER--></span>
+		        </div>
+		    </div>
+		    <div class="portlet-body">
+		        <div data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
+		            <div class="general-item-list">
+			            
+		                <div class="item">
+		                    <div class="item-head">
+		                        <div class="item-details">
+		                            <img class="item-pic rounded" src="http://localhost/evisur/display.jpeg">
+		                            <a href="" class="item-name primary-link">Evisur App</a>
+		                            <span class="item-label">11 Oct 16 · 16:40</span>
+		                        </div>
+		                        <span class="item-status">
+		                            <span class="badge badge-empty badge-danger"></span><!--status--></span>
+		                    </div>
+		                    <div class="item-body"> Tarea leída por Sharon Vivanco. </div>
+		                </div>
+		                
+		                
+			            
+		                <div class="item">
+		                    <div class="item-head">
+		                        <div class="item-details">
+		                            <img class="item-pic rounded" src="http://localhost/evisur/assets/pages/media/users/avatar6.jpg">
+		                            <a href="" class="item-name primary-link">Sharon Vivanco</a>
+		                            <span class="item-label">3 hrs ago</span>
+		                        </div>
+		                        <span class="item-status">
+		                            <span class="badge badge-empty badge-success"></span> <!--status--></span>
+		                    </div>
+		                    <div class="item-body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </div>
+		                </div>
+		                <div class="item">
+		                    <div class="item-head">
+		                        <div class="item-details">
+		                            <img class="item-pic rounded" src="http://localhost/evisur/assets/pages/media/users/avatar6.jpg">
+		                            <a href="" class="item-name primary-link">Oscar Vivanco</a>
+		                            <span class="item-label">5 hrs ago</span>
+		                        </div>
+		                        <span class="item-status">
+		                            <span class="badge badge-empty badge-warning"></span><!--status--></span>
+		                    </div>
+		                    <div class="item-body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat tincidunt ut laoreet. </div>
+		                </div>
+		
+		                <div class="item">
+		                    <div class="item-head">
+		                        <div class="item-details">
+		                            <img class="item-pic rounded" src="http://localhost/evisur/display.jpeg">
+		                            <a href="" class="item-name primary-link">Evisur App</a>
+		                            <span class="item-label">hace 10 minutos</span>
+		                        </div>
+		                        <span class="item-status">
+		                            <span class="badge badge-empty badge-danger"></span><!--status--></span>
+		                    </div>
+		                    <div class="item-body"> Tarea reabierta por Oscar Vivanco. </div>
+		                </div>
+		
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
+	<div class="portlet light ">
+		<div class="portlet-title">
+			<div class="caption caption-md">
+				<i class="icon-bar-chart font-dark hide"></i>
+				<span class="caption-subject font-green-steel bold uppercase">Nuevo Comentario</span>
+			</div>
+		</div>
+        
+	<div class="portlet-body">
+			<div class="general-item-list">
+				<textarea class="inbox-editor  form-control" name="mensaje" rows="6" placeholder="Escriba un comentario..."></textarea>
+				<p><br/><a role="button" class="btn green"><i class="fa fa-check"></i>Enviar</a></p>
+			</div>
+
+	</div>
+</div>
+                                                
+                                                
+<!-- Termina inbox body y col-md-9 -->		
+	</div>
+</div>
