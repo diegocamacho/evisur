@@ -48,6 +48,10 @@ Mtnic Version: 4.6
         <link href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/clockface/css/clockface.css" rel="stylesheet" type="text/css" />
+        
+		<link href="assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="assets/global/css/components-rounded.min.css" rel="stylesheet" id="style_components" type="text/css" />
@@ -337,9 +341,9 @@ Mtnic Version: 4.6
         
         
         <script src="assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>
-        <script src="assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js" type="text/javascript"></script>
+        <!--<script src="assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js" type="text/javascript"></script>
         <script src="assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js" type="text/javascript"></script>
-        <script src="assets/global/plugins/bootstrap-wysihtml5/locales/bootstrap-wysihtml5.es-ES.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap-wysihtml5/locales/bootstrap-wysihtml5.es-ES.js" type="text/javascript"></script>-->
         <script src="assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
         <script src="assets/global/plugins/jquery-file-upload/js/vendor/tmpl.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/jquery-file-upload/js/vendor/load-image.min.js" type="text/javascript"></script>
@@ -355,6 +359,7 @@ Mtnic Version: 4.6
         <script src="assets/global/plugins/jquery-file-upload/js/jquery.fileupload-ui.js" type="text/javascript"></script>
         <script src="assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
         <script src="assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
+        
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="assets/global/scripts/app.min.js" type="text/javascript"></script>
@@ -362,6 +367,7 @@ Mtnic Version: 4.6
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="assets/apps/scripts/inbox.js" type="text/javascript"></script>
         <script src="assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
+
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>

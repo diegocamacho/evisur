@@ -1,9 +1,11 @@
 <? 
+include('includes/session.php');
 include('includes/db.php'); 
 include('includes/funciones.php');
 ?>
 <div class="alert alert-danger " style="display: none;" role="alert" id="msg_error"></div>
-<form class="inbox-compose form-horizontal" id="frm_guarda" >
+<!--<form class="inbox-compose form-horizontal" id="frm_guarda" >-->
+<form class="inbox-compose form-horizontal" id="fileupload" action="#" method="POST" enctype="multipart/form-data">
 
 <!--
     <div class="inbox-compose-btn">
@@ -38,7 +40,7 @@ include('includes/funciones.php');
     <div class="inbox-form-group">
         <label class="control-label" style="width: 120px;">Asunto:</label>
         <div class="controls" style="margin-left: 125px;">
-	        <input type="text" class="form-control" name="asunto" id="asunto">
+	        <input type="text" class="form-control" name="asunto" id="asunto" autocomplete="off">
 	    </div>
     </div>
     <!--
@@ -66,7 +68,7 @@ include('includes/funciones.php');
 			<select id="single" class="form-control select2" name="id_destino">
 				<option selected disabled>Seleccione un usuario</option>
 				<?
-					$sq="SELECT * FROM usuarios WHERE activo=1 ORDER BY nombre ASC";
+					$sq="SELECT * FROM usuarios WHERE activo=1 AND id_usuario !=$s_id_usuario ORDER BY nombre ASC";
 					$q=mysql_query($sq);
 					while($datos=mysql_fetch_assoc($q)){ 
 				?>
@@ -95,7 +97,7 @@ include('includes/funciones.php');
     <div class="inbox-form-group">
         <label class="control-label" style="width: 120px;">Fecha límite:</label>
         <div class="controls" style="margin-left: 125px;">
-	        <input class="form-control fecha" name="fecha_limite" type="text" />
+	        <input class="form-control fecha" name="fecha_limite" type="text" autocomplete="off" />
 	    </div>
     </div>
 
@@ -103,20 +105,18 @@ include('includes/funciones.php');
     <div class="inbox-form-group">
         <textarea class="inbox-editor  form-control" name="mensaje" rows="12" placeholder="Descripción de la tarea"></textarea>
     </div>
-    <!--
+
     <div class="inbox-compose-attachment">
-        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload --
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <span class="btn green btn-outline fileinput-button">
             <i class="fa fa-plus"></i>
-            <span> Add files... </span>
+            <span> Agregar archivos... </span>
             <input type="file" name="files[]" multiple> </span>
-        <!-- The table listing the files available for upload/download --
+        <!-- The table listing the files available for upload/download -->
         <table role="presentation" class="table table-striped margin-top-10">
             <tbody class="files"> </tbody>
         </table>
     </div>
-    -->
-    <!--
     <script id="template-upload" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
         <tr class="template-upload fade">
             <td class="name" width="30%">
@@ -140,7 +140,7 @@ include('includes/funciones.php');
                     <span>Cancel</span>
                 </button> {% } %}</td>
         </tr> {% } %} </script>
-    <!-- The template to display files available for download --
+    <!-- The template to display files available for download -->
     <script id="template-download" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
         <tr class="template-download fade"> {% if (file.error) { %}
             <td class="name" width="30%">
@@ -163,16 +163,23 @@ include('includes/funciones.php');
                     <i class="fa fa-times"></i>
                 </button>
             </td>
-        </tr> {% } %} </script>-->
+        </tr> {% } %} </script>
+
+    
+    
+    
     <div class="inbox-compose-btn">
         <a role="button" class="btn green" onclick="guardaTarea()"><i class="fa fa-check"></i>Enviar</a>
         <!--<button class="btn default">Cancelar</button>-->
     </div>
 </form>
+
 <script src="assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
 
 <script>
+
 $(function(){
+	
 	$('.fecha').datepicker({
 	    orientation: "left",
 	    autoclose: true,
@@ -189,7 +196,7 @@ function guardaTarea(){
         }
 	);
 
-	var datos=$('#frm_guarda').serialize();
+	var datos=$('#fileupload').serialize();
 	$.post('ac/nueva_tarea.php',datos,function(data){
 	    if(data==1){
 			window.open("?Modulo=Tareas", "_self");
@@ -200,4 +207,5 @@ function guardaTarea(){
 	    }
 	});
 }
+
 </script>
