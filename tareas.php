@@ -65,9 +65,9 @@ endwhile;
                                                                 <a href="javascript:;">
                                                                     <img class="contact-pic" src="assets/pages/media/users/avatar6.jpg">
                                                                     <span class="contact-name">
-                                                                    	<?= $user->nombre ?>
+                                                                    	<?= mayus($user->nombre) ?>
                                                                     </span>
-
+                                                                    <span class="contact-status bg-green"></span>
                                                                 </a>
                                                             </li>                                                            
 <? endforeach; ?>

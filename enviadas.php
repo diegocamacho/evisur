@@ -79,7 +79,7 @@ endwhile;
 			                <?= $estrella ?>
 			            </td>
 			            <td class="view-message hidden-xs"> 
-				            <?= $tarea->nombre ?>
+				            <?= mayus($tarea->nombre) ?>
 						</td>
 			            <td class="view-message "> 
 				            <?= $tarea->asunto ?>

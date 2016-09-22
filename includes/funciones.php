@@ -4,6 +4,21 @@ date_default_timezone_set ("America/Bogota");
 $fechahora=date("Y-m-d H:i:s");
 $fecha_actual=date("Y-m-d");
 //Valida cadena de fecha
+
+function mb_ucfirst($string, $encoding = 'UTF-8'){
+	$string = mb_strtolower($string, $encoding);
+    $strlen = mb_strlen($string, $encoding);
+    $firstChar = mb_substr($string, 0, 1, $encoding);
+    $then = mb_substr($string, 1, $strlen - 1, $encoding);
+    return mb_strtoupper($firstChar, $encoding) . $then;
+}
+
+function mayus($string){
+	
+	return ucwords( mb_strtolower($string,'UTF-8') );
+	
+}
+
 function validaStrFecha($fecha,$ano=false){
 	if(!$ano){
 		if( (is_numeric($fecha)) && (strlen((string)$fecha)==2) ){
