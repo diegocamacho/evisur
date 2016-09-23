@@ -6,10 +6,14 @@ switch($tipo):
 		$incluir = 'enviadas.php';
 		$activoEnviadas = 'active';
 	break;
+	case 'nueva';
+		$incluir = 'nueva_tarea.php';
+	break;
 	case 'recibidas';
 	default:
 		$incluir = 'recibidas.php';
 		$activoRecibidas = 'active';
+		
 endswitch;
 
 

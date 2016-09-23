@@ -221,7 +221,7 @@ $(function() {
 });			
 			
 </script>
-<!--
+
 		<hr>
 		
 		<div class="inbox-attached">
@@ -235,11 +235,11 @@ $(function() {
 				</strong>
 		    </div>
 		</div>
-		-->
+
 <!-- empiezan comentarios -->
 
 <hr>
-<!--
+
 		<div class="">
 		    <div class="portlet-title">
 		        <div class="caption caption-md">
@@ -326,7 +326,7 @@ $(function() {
 
 	</div>
 </div>
--->                                      
+                                   
                                                 
 <!-- Termina inbox body y col-md-9 -->		
 	</div>
