@@ -134,49 +134,51 @@ include('includes/funciones.php');
     <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
     <script id="template-upload" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
     	<tr class="template-upload fade">
-		    <td>
+		    <td width="100">
 		        <span class="preview"></span>
 		    </td>
-		    <td>
-		        <p class="name">{%=file.name%}</p>
-		        <strong class="error text-danger label label-danger"></strong>
-		    </td>
-		    <td>
-		        <p class="size">Procesando...</p>
+		    <td align="left" valign="top">
+		        {%=file.name%}
 		        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 		            <div class="progress-bar progress-bar-success" style="width:0%;"></div>
 		        </div>
+		        <strong class="error text-danger label label-danger"></strong>
+		        
 		    </td>
-		    <td> {% if (!i && !o.options.autoUpload) { %}
+		    <!--
+		    <td width="150">
+		        
+		    </td>-->
+		    <td align="right" width="100"> {% if (!i && !o.options.autoUpload) { %}
 		        <button class="btn blue start" disabled>
 		            <i class="fa fa-upload"></i>
 		            <span>Subir</span>
 		        </button> {% } %} {% if (!i) { %}
 		        <button class="btn red cancel">
 		            <i class="fa fa-ban"></i>
-		            <!--<span>Cancelar</span>-->
+		            <span>Cancelar</span>
 		        </button> {% } %} </td>
 		</tr> {% } %} </script>
         <!-- The template to display files available for download -->
 		<script id="template-download" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
 		    <tr class="template-download fade">
-		        <td>
+		        <td width="100">
 			        <input type="hidden" name="archivos[]" value="{%=file.name%}" />
 		            <span class="preview"> {% if (file.thumbnailUrl) { %}
 		                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery>
 		                    <img src="{%=file.thumbnailUrl%}">
 		                </a> {% } %} </span>
 		        </td>
-		        <td>
-		            <p class="name"> {% if (file.url) { %}
+		        <td align="left" valign="top">
+		             {% if (file.url) { %}
 		                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl? 'data-gallery': ''%}>{%=file.name%}</a> {% } else { %}
-		                <span>{%=file.name%}</span> {% } %} </p> {% if (file.error) { %}
+		                <span>{%=file.name%}</span> {% } %}  {% if (file.error) { %}
 		            <div>
 		                <span class="label label-danger">Error</span> {%=file.error%}</div> {% } %} </td>
-		        <td>
-		            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+		        <td width="150">
+		            <span class="size" style="margin-top: 0px;">{%=o.formatFileSize(file.size)%}</span>
 		        </td>
-		        <td> {% if (file.deleteUrl) { %}
+		        <td width="100" align="right"> {% if (file.deleteUrl) { %}
 		            <button class="btn red delete btn-sm" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'
 		                {% } %}>
 		                <i class="fa fa-trash-o"></i>
