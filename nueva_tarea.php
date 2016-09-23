@@ -191,9 +191,7 @@ include('includes/funciones.php');
 		            </button> {% } %} </td>
 		    </tr> {% } %} </script>
 
-    
-    
-    
+
     <div class="inbox-compose-btn">
         <a role="button" class="btn green" onclick="guardaTarea()"><i class="fa fa-check"></i>Enviar</a>
         <!--<button class="btn default">Cancelar</button>-->

@@ -27,8 +27,18 @@ $mensaje=limpiaStr($mensaje,1,1);
 	//Insertamos datos
 	$sql="INSERT INTO tareas (id_remite,id_destino,id_proyecto,fecha_hora_creacion,fecha_limite,asunto,descripcion,prioridad,activo) VALUES ('$s_id_usuario','$id_destino','$id_proyecto','$fechahora','$fecha_limite','$asunto','$mensaje','$prioridad','1')";
 	$q=mysql_query($sql);
+	$id_tarea=mysql_insert_id();
 	if($q){
-		echo "1";
+		if($archivos){
+			foreach($archivos as $archivos => $arch){
+				//Insrtamos las imagenes
+				$sq="INSERT INTO adjuntos (id_tarea,archivo)VALUES('$id_tarea','$arch')";
+				$q=mysql_query($sq);
+			}
+			echo "1";
+		}else{
+			echo "1";	
+		}
 	}else{
 		echo "Ocurrió un error, intente más tarde.";
 	}
