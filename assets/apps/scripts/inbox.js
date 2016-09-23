@@ -1,114 +1,6 @@
 var AppInbox = function () {
 
     var content = $('.inbox-content');
-    var listListing = '';
-
-/*    var loadInbox = function (el, name) {
-        var url = 'app_inbox_inbox.php';
-        var title = el.attr('data-title');
-        var tipo = el.attr('data-title');
-        listListing = name;
-
-        App.blockUI({
-            target: content,
-            overlayColor: 'black',
-            animate: true
-        });
-
-        toggleButton(el);
-
-        $.ajax({
-            type: "GET",
-            cache: false,
-            url: url,
-            dataType: "html",
-            data: {'tipo': tipo},
-            success: function(res) 
-            {
-                toggleButton(el);
-
-                App.unblockUI('.inbox-content');
-
-                $('.inbox-nav > li.active').removeClass('active');
-                el.closest('li').addClass('active');
-                $('.inbox-header > h1').text(title);
-
-                content.html(res);
-
-                if (Layout.fixContentHeight) {
-                    Layout.fixContentHeight();
-                }
-            },
-            error: function(xhr, ajaxOptions, thrownError)
-            {
-                toggleButton(el);
-            },
-            async: false
-        });
-
-        // handle group checkbox:
-        jQuery('body').on('change', '.mail-group-checkbox', function () {
-            var set = jQuery('.mail-checkbox');
-            var checked = jQuery(this).is(":checked");
-            jQuery(set).each(function () {
-                $(this).attr("checked", checked);
-            });
-        });
-    }
-*/
-
-    var loadMessage = function (el, name, resetMenu) {
-        var url = 'app_inbox_view.html';
-
-        App.blockUI({
-            overlayColor: 'none',
-            animate: true
-        });
-
-        toggleButton(el);
-
-        var message_id = el.parent('tr').attr("data-messageid");  
-        
-        $.ajax({
-            type: "GET",
-            cache: false,
-            url: url,
-            dataType: "html",
-            data: {'message_id': message_id},
-            success: function(res) 
-            {
-                App.unblockUI(content);
-
-                toggleButton(el);
-
-                if (resetMenu) {
-                    $('.inbox-nav > li.active').removeClass('active');
-                }
-                $('.inbox-header > h1').text('View Message');
-
-                content.html(res);
-                Layout.fixContentHeight();
-            },
-            error: function(xhr, ajaxOptions, thrownError)
-            {
-                toggleButton(el);
-            },
-            async: false
-        });
-    }
-
-    var initWysihtml5 = function () {
-        /*$('.inbox-wysihtml5').wysihtml5({
-            "stylesheets": ["assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css"],
-            "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
-			"emphasis": true, //Italics, bold, etc. Default true
-			"lists": false, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
-			"html": false, //Button which allows you to edit the generated HTML. Default false
-			"link": false, //Button to insert a link. Default true
-			"image": false, //Button to insert an image. Default true,
-			"color": true //Button to change color of font  
-        });*/
-    }
 	
     var initFileupload = function () {
 
@@ -119,30 +11,10 @@ var AppInbox = function () {
             autoUpload: true
         });
 
-        // Upload server status check for browsers with CORS support:
-        if ($.support.cors) {
-            $.ajax({
-                url: 'upload.php',
-                type: 'HEAD'
-            }).fail(function () {
-                $('<span class="alert alert-error"/>')
-                    .text('Upload server currently unavailable - ' +
-                    new Date())
-                    .appendTo('#fileupload');
-            });
-        }
     }
 
     var loadCompose = function (el) {
         var url = 'nueva_tarea.php';
-
-        App.blockUI({
-            target: content,
-            overlayColor: 'none',
-            animate: true
-        });
-
-        toggleButton(el);
 
         // load the form via ajax
         $.ajax({
@@ -152,8 +24,7 @@ var AppInbox = function () {
             dataType: "html",
             success: function(res) 
             {
-                App.unblockUI(content);
-                toggleButton(el);
+                App.unblockUI();
 
                 $('.inbox-nav > li.active').removeClass('active');
                 $('.inbox-header > h1').text('Nueva Tarea');
@@ -162,95 +33,14 @@ var AppInbox = function () {
                 content.html(res);
 
                 initFileupload();
-                initWysihtml5();
 
                 $('#asunto').focus();
                 Layout.fixContentHeight();
             },
-            error: function(xhr, ajaxOptions, thrownError)
-            {
-                toggleButton(el);
-            },
             async: false
         });
     }
 
-    var loadReply = function (el) {
-        var messageid = $(el).attr("data-messageid");
-        var url = 'app_inbox_reply.html';
-        
-        App.blockUI({
-            target: content,
-            overlayColor: 'none',
-            animate: true
-        });
-
-        toggleButton(el);
-
-        // load the form via ajax
-        $.ajax({
-            type: "GET",
-            cache: false,
-            url: url,
-            dataType: "html",
-            success: function(res) 
-            {
-                App.unblockUI(content);
-                toggleButton(el);
-
-                $('.inbox-nav > li.active').removeClass('active');
-                $('.inbox-header > h1').text('Reply');
-
-                content.html(res);
-                $('[name="message"]').val($('#reply_email_content_body').html());
-
-                handleCCInput(); // init "CC" input field
-
-                initFileupload();
-                initWysihtml5();
-                Layout.fixContentHeight();
-            },
-            error: function(xhr, ajaxOptions, thrownError)
-            {
-                toggleButton(el);
-            },
-            async: false
-        });
-    }
-
-    var handleCCInput = function () {
-        var the = $('.inbox-compose .mail-to .inbox-cc');
-        var input = $('.inbox-compose .input-cc');
-        the.hide();
-        input.show();
-        $('.close', input).click(function () {
-            input.hide();
-            the.show();
-        });
-    }
-
-    var handleBCCInput = function () {
-
-        var the = $('.inbox-compose .mail-to .inbox-bcc');
-        var input = $('.inbox-compose .input-bcc');
-        the.hide();
-        input.show();
-        $('.close', input).click(function () {
-            input.hide();
-            the.show();
-        });
-    }
-
-    var toggleButton = function(el) {
-        if (typeof el == 'undefined') {
-            return;
-        }
-        if (el.attr("disabled")) {
-            el.attr("disabled", false);
-        } else {
-            el.attr("disabled", true);
-        }
-    }
 
     return {
         //main function to initiate the module
