@@ -145,10 +145,9 @@ include('includes/funciones.php');
 		        <strong class="error text-danger label label-danger"></strong>
 		        
 		    </td>
-		    <!--
 		    <td width="150">
-		        
-		    </td>-->
+		        <p class="size">Processing...</p>
+		    </td>
 		    <td align="right" width="100"> {% if (!i && !o.options.autoUpload) { %}
 		        <button class="btn blue start" disabled>
 		            <i class="fa fa-upload"></i>
