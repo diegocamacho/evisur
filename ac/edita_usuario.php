@@ -22,7 +22,10 @@ if(!validarEmail($email)) exit("El correo ".escapar($email)." no es v&aacute;lid
 if($password){
 	$data=", pass='".$password."' ";
 }
-
+if($apellido){
+	$apellido=limpiaStr($apellido,1,1);
+	$nombre=$nombre." ".$apellido;
+}
 //Verificamos que el usuario no exista
 $q=mysql_query("SELECT * FROM usuarios WHERE email='$email' AND id_usuario != $id_usuario ");
 $valida=mysql_num_rows($q);

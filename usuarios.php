@@ -109,25 +109,16 @@ $q=mysql_query($sql);
 		<form id="frm_guarda" class="form-horizontal">
 			
 			<div class="form-group">
-				<label for="nombre" class="col-md-3 control-label">Tipo de Usuario</label>
+				<label for="nombre" class="col-md-3 control-label">Primer nombre</label>
 				<div class="col-md-9">
-					<select class="form-control" name="id_tipo_usuario">
-                    	<option value="0">Seleccione uno</option>
-                    	<?
-	                    $sq="SELECT * FROM tipo_usuario";	
-	                    $q=mysql_query($sq);
-	                    while($ft=mysql_fetch_assoc($q)){
-						?>
-						<option value="<?=$ft['id_tipo_usuario']?>"><?=$ft['tipo_usuario']?></option>
-						<? } ?>
-					</select>
+					<input type="text" maxlength="64" class="form-control dat" name="nombre" id="nuevo_nombre" autocomplete="off">
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="nombre" class="col-md-3 control-label">Nombre</label>
+				<label for="nombre" class="col-md-3 control-label">Primer apellido</label>
 				<div class="col-md-9">
-					<input type="text" maxlength="64" class="form-control dat" name="nombre" id="nuevo_nombre" autocomplete="off">
+					<input type="text" maxlength="64" class="form-control dat" name="apellido" autocomplete="off">
 				</div>
 			</div>
 			
@@ -149,6 +140,22 @@ $q=mysql_query($sql);
 				<label for="password" class="col-md-3 control-label">Contraseña</label>
 				<div class="col-md-9">
 					<input type="text" maxlength="16" class="form-control dat" name="password" autocomplete="off">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="nombre" class="col-md-3 control-label">Tipo de Usuario</label>
+				<div class="col-md-9">
+					<select class="form-control" name="id_tipo_usuario">
+                    	<option value="0">Seleccione uno</option>
+                    	<?
+	                    $sq="SELECT * FROM tipo_usuario";	
+	                    $q=mysql_query($sq);
+	                    while($ft=mysql_fetch_assoc($q)){
+						?>
+						<option value="<?=$ft['id_tipo_usuario']?>"><?=$ft['tipo_usuario']?></option>
+						<? } ?>
+					</select>
 				</div>
 			</div>
 
@@ -187,25 +194,16 @@ $q=mysql_query($sql);
 		<form id="frm_edita" class="form-horizontal">
 			
 			<div class="form-group">
-				<label for="nombre" class="col-md-3 control-label">Tipo de Usuario</label>
+				<label for="nombre" class="col-md-3 control-label">Primer nombre</label>
 				<div class="col-md-9">
-					<select class="form-control" name="id_tipo_usuario" id="id_tipo_usuario">
-                    	<option></option>
-                    	<?
-	                    $sq="SELECT * FROM tipo_usuario";	
-	                    $q=mysql_query($sq);
-	                    while($ft=mysql_fetch_assoc($q)){
-						?>
-						<option value="<?=$ft['id_tipo_usuario']?>"><?=$ft['tipo_usuario']?></option>
-						<? } ?>
-					</select>
+					<input type="text" maxlength="64" class="form-control edit" id="nombre" name="nombre" autocomplete="off">
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="nombre" class="col-md-3 control-label">Nombre</label>
+				<label for="nombre" class="col-md-3 control-label">Primer apellido</label>
 				<div class="col-md-9">
-					<input type="text" maxlength="64" class="form-control edit" id="nombre" name="nombre" autocomplete="off">
+					<input type="text" maxlength="64" class="form-control edit" id="apellido" name="apellido" autocomplete="off">
 				</div>
 			</div>
 			
@@ -230,6 +228,21 @@ $q=mysql_query($sql);
 				</div>
 			</div>
 			
+			<div class="form-group">
+				<label for="nombre" class="col-md-3 control-label">Tipo de Usuario</label>
+				<div class="col-md-9">
+					<select class="form-control" name="id_tipo_usuario" id="id_tipo_usuario">
+                    	<option></option>
+                    	<?
+	                    $sq="SELECT * FROM tipo_usuario";	
+	                    $q=mysql_query($sq);
+	                    while($ft=mysql_fetch_assoc($q)){
+						?>
+						<option value="<?=$ft['id_tipo_usuario']?>"><?=$ft['tipo_usuario']?></option>
+						<? } ?>
+					</select>
+				</div>
+			</div>
 			
 			<input type="hidden" name="id_usuario" id="id_usuario" />
 		</form>
@@ -262,11 +275,13 @@ $(function(){
 	   		var datos = data.split('|');
 	   		var id_tipo_usuario=datos[0];
 	   		var nombre=datos[1];
-	   		var email=datos[2];
-	   		var celular=datos[3];
+	   		var apellido=datos[2];
+	   		var email=datos[3];
+	   		var celular=datos[4];
 	   		
 	   		$('#id_tipo_usuario').val(id_tipo_usuario);
 	   		$('#nombre').val(nombre);
+	   		$('#apellido').val(apellido);
 	   		$('#email').val(email);
 	   		$('#celular').val(celular);
 	   		$('#id_usuario').val(data_id);
@@ -308,8 +323,6 @@ function EditaUsuario(){
 	var datos=$('#frm_edita').serialize();
 	$.post('ac/edita_usuario.php',datos,function(data){
 	    if(data==1){
-	    	$('#load2').hide();
-			$('.btn').show();
 			window.open("?Modulo=Usuarios&msg=2", "_self");
 	    }else{
 	    	$('#load2').hide();
@@ -352,8 +365,6 @@ function NuevoUsuario(){
 	var datos=$('#frm_guarda').serialize();
 	$.post('ac/nuevo_usuario.php',datos,function(data){
 	    if(data==1){
-	    	$('#load').hide();
-			$('.btn').show();
 			window.open("?Modulo=Usuarios&msg=1", "_self");
 	    }else{
 	    	$('#load').hide();

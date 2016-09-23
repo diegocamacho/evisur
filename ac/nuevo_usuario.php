@@ -18,6 +18,10 @@ $nombre=limpiaStr($nombre,1,1);
 if(!validarEmail($email)) exit("El correo ".escapar($email)." no es válido, verifique el formato.");
 $celular=limpiaStr($celular,1);
 
+if($apellido){
+	$apellido=limpiaStr($apellido,1,1);
+	$nombre=$nombre." ".$apellido;
+}
 
 //Verificamos que el usuario no exista
 $q=mysql_query("SELECT * FROM usuarios WHERE email='$email' ");

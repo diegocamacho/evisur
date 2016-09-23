@@ -335,57 +335,12 @@ function tipo_usuario($id_tipo_usuario){
 	return $tipo;
 }
 
-function dameLugar($id){
-	$sql="SELECT locacion_display FROM locaciones_detalle WHERE id_locacion_detalle=$id";
-	$q=mysql_query($sql);
-	$ft=mysql_fetch_assoc($q);
-	$nombre=$ft['locacion_display'];
-	return $nombre;
-}
-
 function acentos($cadena){
     $originales =  'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
     $modificadas = 'AAAAAAACEEEEIIIIDNOOOOOOUUUUYbsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
     $cadena = utf8_decode($cadena);
     $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
     return utf8_encode($cadena);
-}
-
-function obtenerDeuda($id_cliente){
-	
-	global $conexion;
-	
-	$sql = "SELECT SUM(monto) FROM abonos WHERE id_cliente = '$id_cliente'";
-	$q = mysql_query($sql);
-	$abonos = mysql_result($q, 0);
-	
-	$sql ="SELECT * FROM creditos WHERE id_cliente = '$id_cliente'";
-	$q = mysql_query($sql);
-	
-	while($ft = mysql_fetch_assoc($q)){
-		
-		$id_venta = $ft['id_venta'];
-		
-		$sql ="SELECT * FROM venta_detalle WHERE id_venta = $id_venta";
-		$qq = mysql_query($sql);
-		
-		while($fx = mysql_fetch_assoc($qq)){
-
-			$cantidad = $fx['cantidad'];
-			$precio_venta = $fx['precio_venta'];
-			$adeuda+= $cantidad*$precio_venta;
-					
-		}		
-	}
-	
-	$debe = $adeuda-$abonos;
-	
-	if($debe==0){
-		return  "0.00";
-	}else{
-		return $debe;
-	}
-		
 }
 
 
@@ -397,49 +352,6 @@ $data = explode(' ', $fecha_hora);
 return fechaLetraDos($data[0]).' · '.substr($data[1], 0,5);
 
 	
-	
-}
-
-function dameVendedor($id) {
-	$sql="SELECT nombre FROM usuarios WHERE id_usuario=$id";
-	$q=mysql_query($sql);
-	$ft=mysql_fetch_assoc($q);
-	return $ft['nombre'];
-}
-function torzon($titulo,$mensaje){
-	
-	$correo = "hola@epicmedia.pro";
-	$headers = "MIME-Version: 1.0\r\n"; 
-	$headers .= "Content-type: text/html; charset=utf8\r\n"; 
-	$headers .= "From: Epicmedia Robot <robot@epicmedia.pro>\r\n";
-	
-	$bool = mail($correo,$titulo,$mensaje,$headers);
-	if($bool){
-		return true;
-	}else{
-	    return false;
-	}
-}
-function torzon2($cliente){
-	$mail = $cliente." acaba de pedir que le avisen cuando Adminus regrese.";
-	$titulo = "Soporte Adminus";
-	$correo = "diegocamacho2.0@gmail.com,adolfoflores@me.com";
-	$headers = "MIME-Version: 1.0\r\n"; 
-	$headers .= "Content-type: text/html; charset=utf8\r\n"; 
-	$headers .= "From: Adminus Robot <robot@adminus.mx>\r\n";
-	
-	$bool = mail($correo,$titulo,$mail,$headers);
-	if($bool){
-		return true;
-	}else{
-	    return false;
-	}
-}
-function dameTarifa($dias,$horas,$id_vehiculo) {
-	$sql="SELECT * FROM vehiculos WHERE id_vehiculo=$id_vehiculo";
-	$q=mysql_query($sql);
-	$ft=mysql_fetch_assoc($q);
-
 	
 }
 
@@ -455,38 +367,29 @@ function horaInput($hora){
   return $hora_oficial;
 }
 
-//Código de Reservación
-function codigoReservacion(){ 
-       $cadena="[^A-Z0-9]"; 
-       return substr(eregi_replace($cadena, "", md5(rand())) . eregi_replace($cadena, "", md5(rand())) . eregi_replace($cadena, "", md5(rand())), 0, 10); 
-}
-
-
-function damePrecioDia($id_vehiculo,$id_locacion){
-	$sql="SELECT precio_dia FROM vehiculos_precios WHERE id_vehiculo=$id_vehiculo AND id_locacion=$id_locacion";
-	$q=mysql_query($sql);
-	$ft=mysql_fetch_assoc($q);
-	$precio=$ft['precio_dia'];
-	return $precio;
-}
-
-function damePrecioHora($id_vehiculo,$id_locacion){
-	$sql="SELECT precio_hora FROM vehiculos_precios WHERE id_vehiculo=$id_vehiculo AND id_locacion=$id_locacion";
-	$q=mysql_query($sql);
-	$ft=mysql_fetch_assoc($q);
-	$precio=$ft['precio_hora'];
-	return $precio;
-}
-
-function dameVehiculo($id_vehiculo_detalle){
-	$sql="SELECT vehiculo FROM vehiculos_detalle
-	JOIN vehiculos ON vehiculos.id_vehiculo=vehiculos_detalle.id_vehiculo
-	WHERE id_vehiculo_detalle=$id_vehiculo_detalle";
-	$q=mysql_query($sql);
-	$ft=mysql_fetch_assoc($q);
-	return $ft['vehiculo'];
-}
-
 function damePorcentaje($cantidad,$porciento){
 	return number_format($cantidad*$porciento/100 ,2);
+}
+
+function dias_restantes($fecha_final) {
+	$fecha_actual = date("Y-m-d");
+	$s = strtotime($fecha_actual)-strtotime($fecha_final);
+	$d = intval($s/86400);
+	$diferencia=$d;
+	return $diferencia;
+}
+
+function dias_restantes_formato($fecha_final) {
+	if(!$fecha_final){ return "N/A"; }
+	$fecha_actual = date("Y-m-d");
+	$s = strtotime($fecha_actual)-strtotime($fecha_final);
+	$d = intval($s/86400);
+	if($d==0){
+		$diferencia="Hoy";
+	}elseif($d==1){
+		$diferencia="Ayer";
+	}else{
+		$diferencia=$d." días";
+	}
+	return $diferencia;
 }
