@@ -98,7 +98,7 @@ var AppInbox = function () {
     }
 
     var initWysihtml5 = function () {
-        $('.inbox-wysihtml5').wysihtml5({
+        /*$('.inbox-wysihtml5').wysihtml5({
             "stylesheets": ["assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css"],
             "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
 			"emphasis": true, //Italics, bold, etc. Default true
@@ -107,7 +107,7 @@ var AppInbox = function () {
 			"link": false, //Button to insert a link. Default true
 			"image": false, //Button to insert an image. Default true,
 			"color": true //Button to change color of font  
-        });
+        });*/
     }
 	
     var initFileupload = function () {
