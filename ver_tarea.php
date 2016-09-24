@@ -1,18 +1,24 @@
-<? 
-extract($_GET);
-
+<?php  
+	
+extract($_GET); 
 $id_tarea = $tarea;
+
 $sql = "
 SELECT tareas.*,proyectos.proyecto 
 FROM tareas 
 LEFT JOIN proyectos ON proyectos.id_proyecto = tareas.id_proyecto
-WHERE tareas.id_tarea = $tarea AND (id_remite = $s_id_usuario OR id_destino = $s_id_usuario)
-";
+WHERE tareas.id_tarea = $tarea AND (id_remite = $s_id_usuario OR id_destino = $s_id_usuario)";
 
 $q = mysql_query($sql);
 $tarea = mysql_fetch_object($q);
 
-if($s_id_usuario==$tarea->id_remite):
+
+$sql = "SELECT*FROM usuarios WHERE id_usuario = {$tarea->id_remite}"; 
+$q = mysql_query($sql);
+$remitente = mysql_fetch_object($q);
+
+
+if($s_id_usuario==$tarea->id_remite):	##olakase
 	$soyremite = 1;
 	$soydestino = 0;
 else:
@@ -20,11 +26,12 @@ else:
 	$soydestino = 1;
 endif;
 
+
 if($tarea->proyecto): 
-	$proyecto = '['.$tarea->proyecto.']'; 
+	$proyecto = '['.$tarea->proyecto.']';  # Obtenemos nombre del proyecto
 endif;
 
-switch($tarea->prioridad):
+switch($tarea->prioridad):					# Obtenemos la prioridad
 case '1':
 	$prioridad = 'BAJA';
 	$class = 'success';
@@ -39,24 +46,19 @@ case '3':
 break;
 endswitch; 
 
+########### DE AQUI PA BAJO SE GENERA LA BARRA DE STATUS ###########
+
 $fecha_c = $tarea->fecha_hora_creacion;
 $fecha_c = explode(' ', $fecha_c);
 
 $hora = substr($fecha_c[1],0,5);
 $f_ex = explode('-', $fecha_c[0]);
 
-
 $dia = $f_ex[2];
 $mes = soloMes($f_ex[1]);
 $anio = $f_ex[0];
 
 $string_fecha = "$dia de $mes de $anio";
-
-$id_remite = $tarea->id_remite;
-
-$sql = "SELECT*FROM usuarios WHERE id_usuario = $id_remite";
-$q = mysql_query($sql);
-$remitente = mysql_fetch_object($q);
 
 $t_creador = $tarea->terminado_creador;
 $t_destino = $tarea->terminado_destino;
@@ -92,10 +94,9 @@ if($fecha_finalizada):
 else:
 	
 	$dias_restantes = dias_restantes($tarea->fecha_limite);
-	
-	
+	$dias_restantes = abs($dias_restantes);
+
 	$btn_compeltada = 'inline';
-	
 	
 	$dia_no = 'días';
 	$color = 'danger';
@@ -122,7 +123,6 @@ else:
 	elseif(date('Y-m-d')==$tarea->fecha_limite):
 		$en = "Hoy";			
 	else:
-		$dias_restantes = abs($dias_restantes);
 		if($dias_restantes==1):
 			$en = "Atraso de $dias_restantes día";
 		else:
@@ -134,6 +134,8 @@ else:
 	
 endif;
 
+########### TERMINA A LA VERGA COMPA. ###########
+
 
 if($soyremite==1):
 
@@ -141,14 +143,37 @@ if($soyremite==1):
 	
 endif;
 
+$sql = "SELECT*FROM adjuntos WHERE id_tarea = $id_tarea AND id_comentario = 0";
+$q = mysql_query($sql);
+$adjuntos = array();
 
+while($archivo = mysql_fetch_object($q)):
+	$adjuntos[] = $archivo;
+endwhile;
 
-function dias_restantes($fecha_final) {
-	$fecha_actual = date("Y-m-d");
-	$s = strtotime($fecha_final)-strtotime($fecha_actual);
-	$d = intval($s/86400);
-	$diferencia = $d;
-	return $diferencia;
+$hay_adjuntos = count($adjuntos);
+
+$sql = "SELECT comentarios.*, usuarios.nombre FROM comentarios LEFT JOIN usuarios ON usuarios.id_usuario = comentarios.id_usuario WHERE id_tarea = $id_tarea ORDER BY fecha_hora ASC";
+$q = mysql_query($sql);
+$comentarios = array();
+
+while($comment = mysql_fetch_object($q)):
+	$comentarios[] = $comment;
+endwhile;
+
+$hay_comentarios = count($comentarios);
+
+$fechaHoraComentario = function ($fecha_hora){
+	
+	$ar = explode(' ', $fecha_hora);
+	
+	$f = $ar[0]; $h = $ar[1];
+
+	$fecha = fechaLetraAltAnio($f);
+	$hora = horaInput($h);
+	
+	return ucwords(strtolower($fecha)).' · '.strtolower($hora);	
+
 }
 
 ?>
@@ -166,12 +191,50 @@ color: #666 !important;
 
 $(function() {
 /*
+Para enviar el comentario.
 	App.blockUI(
 		{
-            message: 'Enviando...'
+            message: 'Cargando...'
         }
 	);
-	*/
+*/
+
+	$('#enviar_comentario').click(function() {
+		
+		var comentario =  $.trim($('#mensaje').val());
+
+		if(!comentario){
+			return false;
+		}
+		
+		
+		App.blockUI(
+			{
+	            message: 'Enviando comentario...'
+	        }
+		);
+		
+
+		
+		$.post('ac/nuevo_comentario.php','comentario='+comentario+'&id_tarea=<?= $id_tarea ?>',function(data) {
+		
+			if(data==1){
+				
+				window.location.reload();
+				
+			}else{
+				
+				App.UnblockUI();
+				alert(data);
+				
+			}
+			
+		
+		});
+		
+		
+	
+	});
 
 	$('#completada').click(function() {
 		
@@ -198,14 +261,12 @@ $(function() {
 		<div class="inbox-header inbox-view-header">
 			<h1 class="pull-left">
 				<?= $proyecto ?> <?= $tarea->asunto ?>
-			<span class="badge badge-<?= $class ?>">
-				<?= $prioridad ?>
-			</span>
+			
 			</h1>
 			<div class="pull-right">
-	        	<!--
-		        <a href="javascript:;" class="btn btn-icon-only dark btn-outline"><i class="fa fa-print"></i></a>
-				-->
+	        	<span class="badge badge-<?= $class ?>">
+				<?= $prioridad ?>
+			</span>
 	    	</div>
 		</div>
 
@@ -231,22 +292,34 @@ $(function() {
 			</div>
 			
 			<p style="display:<?=$btn_compeltada?>"><br/><a role="button" id="completada" class="btn green"><i class="fa fa-check"></i>Marcar como Completada</a></p>
-			
+						
+<?
+if($hay_adjuntos):	
+?>
 			<hr>
-			
 			<div class="inbox-attached">
 			    <div class="margin-bottom-10">
 			        <span class="item-body">Archivos adjuntos: </span>
 			    </div>
 			    <div>
 					<strong>
-						<a href="javascript:;">DOCUMENTO EN ZIP (1).docx</a><br/>
-						<a href="javascript:;">Balanza VIVANCO.xlsx</a>
+<?
+	foreach($adjuntos as $adjunto):
+?>
+						<a href="files/<?= $adjunto->archivo ?>" target="_blank">
+							<?= $adjunto->archivo ?>
+							</a><br/>
+<?
+	endforeach;
+?>
 					</strong>
 			    </div>
 			</div>
-	
-	<!-- empiezan comentarios -->
+<?
+endif;	
+?>	
+
+	<!-- empiezan comentarios display.jpeg -->
 	
 			<hr>
 	
@@ -261,60 +334,51 @@ $(function() {
 			    <div class="portlet-body">
 			        <div data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
 			            <div class="general-item-list">
+
+
+<?
+if($hay_comentarios):	
+
+	foreach($comentarios as $comentario):
+		
+		if($comentario->id_usuario==0):
+			$nombre = 'Evisur App';
+			$foto = 'display.jpeg';
+			$badge = '<span class="badge badge-empty badge-danger"></span></span>';
+		else:
+			$nombre = $comentario->nombre;
+			$badge = '<span class="badge badge-empty badge-success"></span>';
+			$foto = 'assets/pages/media/users/avatar6.jpg';
+
+		endif;
+?>
+
 				            
 			                <div class="item">
 			                    <div class="item-head">
 			                        <div class="item-details">
-			                            <img class="item-pic rounded" src="http://localhost/evisur/display.jpeg">
-			                            <a href="" class="item-name primary-link">Evisur App</a>
-			                            <span class="item-label">11 Oct 16 · 16:40</span>
+			                            <img class="item-pic rounded" src="http://localhost/evisur/<?= $foto ?>">
+			                            <span class="item-name primary-link"><?= mayus($nombre) ?></span>
+			                            <span class="item-label"><?= $fechaHoraComentario($comentario->fecha_hora) ?></span>
 			                        </div>
 			                        <span class="item-status">
-			                            <span class="badge badge-empty badge-danger"></span></span>
+			                            <?= $badge ?>
+			                        </span>
 			                    </div>
-			                    <div class="item-body"> Tarea leída por Sharon Vivanco. </div>
+			                    <div class="item-body" style="margin-left: 50px"> <?= $comentario->comentario ?> </div>
 			                </div>
-			                
-			                
-				            
-			                <div class="item">
-			                    <div class="item-head">
-			                        <div class="item-details">
-			                            <img class="item-pic rounded" src="http://localhost/evisur/assets/pages/media/users/avatar6.jpg">
-			                            <a href="" class="item-name primary-link">Sharon Vivanco</a>
-			                            <span class="item-label">3 hrs ago</span>
-			                        </div>
-			                        <span class="item-status">
-			                            <span class="badge badge-empty badge-success"></span> </span>
-			                    </div>
-			                    <div class="item-body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </div>
-			                </div>
-			                <div class="item">
-			                    <div class="item-head">
-			                        <div class="item-details">
-			                            <img class="item-pic rounded" src="http://localhost/evisur/assets/pages/media/users/avatar6.jpg">
-			                            <a href="" class="item-name primary-link">Oscar Vivanco</a>
-			                            <span class="item-label">5 hrs ago</span>
-			                        </div>
-			                        <span class="item-status">
-			                            <span class="badge badge-empty badge-warning"></span></span>
-			                    </div>
-			                    <div class="item-body"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat tincidunt ut laoreet. </div>
-			                </div>
-			
-			                <div class="item">
-			                    <div class="item-head">
-			                        <div class="item-details">
-			                            <img class="item-pic rounded" src="http://localhost/evisur/display.jpeg">
-			                            <a href="" class="item-name primary-link">Evisur App</a>
-			                            <span class="item-label">hace 10 minutos</span>
-			                        </div>
-			                        <span class="item-status">
-			                            <span class="badge badge-empty badge-danger"></span></span>
-			                    </div>
-			                    <div class="item-body"> Tarea reabierta por Oscar Vivanco. </div>
-			                </div>
-			
+
+<?
+	endforeach;
+
+else:
+?>	
+	<br>No hay comentarios.	
+<?
+endif;	
+?>
+
+
 			            </div>
 			        </div>
 			    </div>
@@ -330,8 +394,8 @@ $(function() {
 	        
 				<div class="portlet-body">
 					<div class="general-item-list">
-						<textarea class="inbox-editor  form-control" name="mensaje" rows="6" placeholder="Escriba un comentario..."></textarea>
-						<p><br/><a role="button" class="btn green"><i class="fa fa-check"></i>Enviar</a></p>
+						<textarea class="inbox-editor  form-control" name="mensaje" id="mensaje" rows="6" placeholder="Escriba un comentario..."></textarea>
+						<p><br/><a role="button" class="btn green" id="enviar_comentario"><i class="fa fa-check"></i>Enviar</a></p>
 					</div>
 				</div>
 			</div>

@@ -45,8 +45,6 @@ endwhile;
 //$incluir = 'ver_tarea.php';
 
 ?>
-
-
 <div class="container">
                                     <div class="page-content-inner">
                                         <div class="inbox">

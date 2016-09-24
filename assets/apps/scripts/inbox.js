@@ -16,6 +16,12 @@ var AppInbox = function () {
     var loadCompose = function (el) {
         var url = 'nueva_tarea.php';
 
+	App.blockUI(
+		{
+            message: 'Cargando...'
+        }
+	);
+
         // load the form via ajax
         $.ajax({
             type: "GET",
