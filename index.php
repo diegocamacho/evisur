@@ -232,6 +232,15 @@ Mtnic Version: 4.6
                                                 <li><a href="?Modulo=Usuarios" class="nav-link ">Usuarios</a></li>
                                             </ul>
                                         </li>
+                                        
+                                        <li class="menu-dropdown classic-menu-dropdown">
+                                            <a href="javascript:;"> Reportes
+                                                <span class="arrow"></span>
+                                            </a>
+                                            <ul class="dropdown-menu pull-left">
+                                                <li><a href="?Modulo=ReporteTareas" class="nav-link ">Tareas</a></li>
+                                            </ul>
+                                        </li>
                                         <? } ?>
                                     </ul>
                                 </div>
@@ -254,25 +263,45 @@ Mtnic Version: 4.6
                             <!-- BEGIN PAGE CONTENT BODY -->
                             <div class="page-content">
 	                            <?
-                                switch($menu){
+		                        
+		                        if($s_tipo==1){
+                                	switch($menu){
+							    		
+							    		
+							    		//Módulos
+							    		case 'Tareas':
+							    		include("tareas.php");	
+							    		break;
+							    		
+							    		//Catálogos
+							    		case 'Usuarios':
+							    		include("usuarios.php");	
+							    		break;
+							    		
+							    		case 'Proyectos':
+							    		include("proyectos.php");	
+							    		break;
+							    		
+							    		//Reportes
+							    		case 'ReporteTareas':
+							    		include("reporte_tareas.php");	
+							    		break;
+							    				    
+							    		default:
+							    		include('dashboard.php');
 							    	
-							    	//Módulos
-							    	case 'Tareas':
-							    	include("tareas.php");	
-							    	break;
-							    	
-							    	//Catálogos
-							    	case 'Usuarios':
-							    	include("usuarios.php");	
-							    	break;
-							    	
-							    	case 'Proyectos':
-							    	include("proyectos.php");	
-							    	break;
-							    			    
-							    	default:
-							    	include('dashboard.php');
-							    
+									}
+								}else{
+									switch($menu){
+
+									    case 'Tareas':
+							    		include("tareas.php");	
+							    		break;
+							    		
+									    default:
+							    		include('tareas.php');
+							    		
+									}
 								}
 								?>
                             </div>

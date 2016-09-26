@@ -14,7 +14,7 @@ if($query){
 	$datos=explode(" ", $ft['nombre']);
 	$nombre=$datos[0];
 	$apellido=$datos[1];
-	echo $ft['id_tipo_usuario']."|".$nombre."|".$apellido."|".$ft['email']."|".$ft['celular'];
+	echo $ft['id_tipo_usuario']."|".$nombre."|".$apellido."|".$ft['email']."|".$ft['celular']."|".$ft['foto'];
 }else{
 	echo "error";
 }
