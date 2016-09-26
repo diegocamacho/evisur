@@ -74,10 +74,18 @@ endwhile;
 <div class="text-center"><span class="item-label" style="color:#545454 !important;">Último Acceso</span></div>
 </p>
 
-<? foreach($usuario as $user): ?>
+<? foreach($usuario as $user): 
+	
+		if($user->foto):	
+			$foto = $user->foto;
+		else:
+			$foto = 'display.jpeg';		
+		endif;
+	
+?>
                                                             <li>
                                                                 <a href="javascript:;" style="cursor: default">
-                                                                    <img class="contact-pic" src="assets/pages/media/users/avatar6.jpg">
+                                                                    <img class="contact-pic" src="files/<?= $foto ?>">
                                                                     <span class="contact-name">
                                                                     	<?= mayus($user->nombre) ?> 
                                                                     </span>
