@@ -33,7 +33,7 @@ if($valida>0){
 	exit("El email ".$email." esta en uso.");
 }else{
 	//Insertamos datos
-	$sql="UPDATE usuarios SET id_tipo_usuario='$id_tipo_usuario', nombre='$nombre', email='$email', celular='$celular' ".$data." WHERE id_usuario=$id_usuario";
+	$sql="UPDATE usuarios SET id_tipo_usuario='$id_tipo_usuario', nombre='$nombre', email='$email', celular='$celular',foto='$foto_final' ".$data." WHERE id_usuario=$id_usuario";
 	$q=mysql_query($sql);
 	if($q){
 		echo "1";
