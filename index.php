@@ -125,7 +125,7 @@ Mtnic Version: 4.6
                                         <!-- BEGIN USER LOGIN DROPDOWN -->
                                         <li class="dropdown dropdown-user dropdown-dark">
                                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                                <img alt="" class="img-circle" src="<? if($s_display){ echo "files/".$s_display; }else{ echo "display.jpeg"; }?>">
+                                                <img alt="" class="img-circle" src="<? if($s_display){ echo "files/".$s_display; }else{ echo "files/display.jpeg"; }?>">
                                                 <span class="username username-hide-mobile"><?=$s_nombre?></span>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-default">
