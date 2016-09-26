@@ -232,6 +232,15 @@ Mtnic Version: 4.6
                                                 <li><a href="?Modulo=Usuarios" class="nav-link ">Usuarios</a></li>
                                             </ul>
                                         </li>
+                                        
+                                        <li class="menu-dropdown classic-menu-dropdown">
+                                            <a href="javascript:;"> Reportes
+                                                <span class="arrow"></span>
+                                            </a>
+                                            <ul class="dropdown-menu pull-left">
+                                                <li><a href="?Modulo=ReporteTareas" class="nav-link ">Tareas</a></li>
+                                            </ul>
+                                        </li>
                                         <? } ?>
                                     </ul>
                                 </div>
@@ -271,6 +280,11 @@ Mtnic Version: 4.6
 							    		
 							    		case 'Proyectos':
 							    		include("proyectos.php");	
+							    		break;
+							    		
+							    		//Reportes
+							    		case 'ReporteTareas':
+							    		include("reporte_tareas.php");	
 							    		break;
 							    				    
 							    		default:

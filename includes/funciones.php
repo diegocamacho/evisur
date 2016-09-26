@@ -440,3 +440,21 @@ function dias_restantes_formato($fecha_final) {
 	}
 	return $diferencia;
 }
+
+function prioridad($prioridad) {
+	if($prioridad==1){
+		return "Baja";
+	}elseif($prioridad==2){
+		return "Media";
+	}elseif($prioridad==3){
+		return "Alta";
+	}
+}
+
+function dameProyecto($id_proyecto) {
+	if(!$id_proyecto) return "N/A";
+	$sq="SELECT * FROM proyectos WHERE id_proyecto=$id_proyecto";
+	$q=mysql_query($sq);
+	$dat=mysql_fetch_assoc($q);
+	return $dat['proyecto'];
+}
