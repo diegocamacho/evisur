@@ -254,25 +254,40 @@ Mtnic Version: 4.6
                             <!-- BEGIN PAGE CONTENT BODY -->
                             <div class="page-content">
 	                            <?
-                                switch($menu){
+		                        
+		                        if($s_tipo==1){
+                                	switch($menu){
+							    		
+							    		
+							    		//Módulos
+							    		case 'Tareas':
+							    		include("tareas.php");	
+							    		break;
+							    		
+							    		//Catálogos
+							    		case 'Usuarios':
+							    		include("usuarios.php");	
+							    		break;
+							    		
+							    		case 'Proyectos':
+							    		include("proyectos.php");	
+							    		break;
+							    				    
+							    		default:
+							    		include('dashboard.php');
 							    	
-							    	//Módulos
-							    	case 'Tareas':
-							    	include("tareas.php");	
-							    	break;
-							    	
-							    	//Catálogos
-							    	case 'Usuarios':
-							    	include("usuarios.php");	
-							    	break;
-							    	
-							    	case 'Proyectos':
-							    	include("proyectos.php");	
-							    	break;
-							    			    
-							    	default:
-							    	include('dashboard.php');
-							    
+									}
+								}else{
+									switch($menu){
+
+									    case 'Tareas':
+							    		include("tareas.php");	
+							    		break;
+							    		
+									    default:
+							    		include('tareas.php');
+							    		
+									}
 								}
 								?>
                             </div>
