@@ -13,19 +13,19 @@ $sql = "SELECT*FROM tareas WHERE id_tarea = $id_tarea";
 $q = mysql_query($sql);
 $tarea = mysql_fetch_object($q);
 
-if($s_id_usuario!=$tarea->id_destino) exit('Debes ser el destinatario para cerrar la tarea'); 
+if($s_id_usuario!=$tarea->id_remite) exit('Debes ser el remitente para finalizar la tarea'); 
 
 $hoy_fecha_hora = date('Y-m-d H:i:s');
 //Updateamos el estado
-$sql="UPDATE tareas SET terminado_destino=1, fecha_hora_terminado = '$hoy_fecha_hora' WHERE id_tarea=$id_tarea";
+$sql="UPDATE tareas SET terminado_destino = 1, terminado_creador = 1, fecha_hora_terminado = '$hoy_fecha_hora' WHERE id_tarea=$id_tarea";
 $q=mysql_query($sql);
 if($q){
 	echo "1";
 	
-	$mensaje_bot = mayus($s_nombre).' envío esta tarea a Revisión.';
+	$mensaje_bot = mayus($s_nombre).' marcó esta tarea como Completada.';
 	$sql = "INSERT INTO comentarios (id_tarea,fecha_hora,comentario)VALUES('$id_tarea','$hoy_fecha_hora','$mensaje_bot')";
 	$q = mysql_query($sql);
-		
+
 }else{
 	echo "Ocurrió un error al actualizar.";
 }

@@ -20,7 +20,7 @@ id_destino
 mensaje
 $nombre=limpiaStr($nombre,1,1);*/
 $asunto=limpiaStr($asunto,1,1);
-$mensaje=limpiaStr($mensaje,1,1);
+$mensaje=escapar($mensaje,0);
 
 
 

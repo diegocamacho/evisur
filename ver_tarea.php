@@ -2,7 +2,7 @@
 	
 extract($_GET); 
 $id_tarea = $tarea;
-
+$hoy_fecha_hora = date('Y-m-d H:i:s');
 $sql = "
 SELECT tareas.*,proyectos.proyecto 
 FROM tareas 
@@ -13,17 +13,60 @@ $q = mysql_query($sql);
 $tarea = mysql_fetch_object($q);
 
 
+$t_creador = 		$tarea->terminado_creador;
+$t_destino = 		$tarea->terminado_destino;
+$fecha_limite = 	$tarea->fecha_limite;
+$fecha_finalizada = $tarea->fecha_hora_terminado;
+$fecha_c = 			$tarea->fecha_hora_creacion;
+
+$destino_completada = 'none';
+$remite_finaliza = 'none';
+$remite_reabrir = 'none';
+						
+
 $sql = "SELECT*FROM usuarios WHERE id_usuario = {$tarea->id_remite}"; 
 $q = mysql_query($sql);
 $remitente = mysql_fetch_object($q);
 
+$sql = "SELECT*FROM usuarios WHERE id_usuario = {$tarea->id_destino}"; 
+$q = mysql_query($sql);
+$destino = mysql_fetch_object($q);
 
-if($s_id_usuario==$tarea->id_remite):	##olakase
+if($s_id_usuario==$tarea->id_remite):	
 	$soyremite = 1;
 	$soydestino = 0;
 else:
 	$soyremite = 0;
 	$soydestino = 1;
+endif;
+
+
+if($soyremite):
+
+	if( ($t_creador==0) && ($t_destino==1) ):
+		$remite_finaliza 	= 'inline';
+		$remite_reabrir		= 'inline';
+	endif;
+
+endif;
+
+if($soydestino):
+	
+	if(	($t_creador==0) && ($t_destino==0) ):
+		$destino_completada = 'inline';
+	endif;
+	
+	if($tarea->leido==0){
+
+		$sql = "UPDATE tareas SET leido = 1 WHERE id_tarea = $id_tarea";
+		$q = mysql_query($sql);
+		
+		$mensaje_bot = mayus($destino->nombre).' ha leído esta tarea.';
+		$sql = "INSERT INTO comentarios (id_tarea,fecha_hora,comentario)VALUES('$id_tarea','$hoy_fecha_hora','$mensaje_bot')";
+		$q = mysql_query($sql);
+
+	}
+
 endif;
 
 
@@ -48,7 +91,7 @@ endswitch;
 
 ########### DE AQUI PA BAJO SE GENERA LA BARRA DE STATUS ###########
 
-$fecha_c = $tarea->fecha_hora_creacion;
+
 $fecha_c = explode(' ', $fecha_c);
 
 $hora = substr($fecha_c[1],0,5);
@@ -59,12 +102,6 @@ $mes = soloMes($f_ex[1]);
 $anio = $f_ex[0];
 
 $string_fecha = "$dia de $mes de $anio";
-
-$t_creador = $tarea->terminado_creador;
-$t_destino = $tarea->terminado_destino;
-$fecha_limite = $tarea->fecha_limite;
-$fecha_finalizada = $tarea->fecha_hora_terminado;
-
 
 if($fecha_finalizada):
 
@@ -137,12 +174,6 @@ endif;
 ########### TERMINA A LA VERGA COMPA. ###########
 
 
-if($soyremite==1):
-
-	$btn_compeltada = 'none';
-	
-endif;
-
 $sql = "SELECT*FROM adjuntos WHERE id_tarea = $id_tarea AND id_comentario = 0";
 $q = mysql_query($sql);
 $adjuntos = array();
@@ -153,7 +184,7 @@ endwhile;
 
 $hay_adjuntos = count($adjuntos);
 
-$sql = "SELECT comentarios.*, usuarios.nombre FROM comentarios LEFT JOIN usuarios ON usuarios.id_usuario = comentarios.id_usuario WHERE id_tarea = $id_tarea ORDER BY fecha_hora ASC";
+$sql = "SELECT comentarios.*, usuarios.nombre,usuarios.foto FROM comentarios LEFT JOIN usuarios ON usuarios.id_usuario = comentarios.id_usuario WHERE id_tarea = $id_tarea ORDER BY fecha_hora ASC";
 $q = mysql_query($sql);
 $comentarios = array();
 
@@ -164,16 +195,11 @@ endwhile;
 $hay_comentarios = count($comentarios);
 
 $fechaHoraComentario = function ($fecha_hora){
-	
-	$ar = explode(' ', $fecha_hora);
-	
+	$ar = explode(' ', $fecha_hora);	
 	$f = $ar[0]; $h = $ar[1];
-
 	$fecha = fechaLetraAltAnio($f);
 	$hora = horaInput($h);
-	
 	return ucwords(strtolower($fecha)).' · '.strtolower($hora);	
-
 }
 
 ?>
@@ -190,14 +216,22 @@ color: #666 !important;
 <script>
 
 $(function() {
-/*
-Para enviar el comentario.
-	App.blockUI(
-		{
-            message: 'Cargando...'
-        }
-	);
-*/
+        $('#fileupload').fileupload({
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            url: 'upload.php',
+            autoUpload: true
+        });
+        
+        $('#fileupload').bind('fileuploadprogressall', function (e, data) {
+        	$('#enviar_comentario').hide();
+        });
+
+        $('#fileupload').bind('fileuploaddone', function (e, data) {
+	       	$('#enviar_comentario').show();
+        });
+        
+        
 
 	$('#enviar_comentario').click(function() {
 		
@@ -207,50 +241,71 @@ Para enviar el comentario.
 			return false;
 		}
 		
-		
-		App.blockUI(
-			{
+		App.blockUI({
 	            message: 'Enviando comentario...'
-	        }
-		);
+	    });
 		
-
-		
-		$.post('ac/nuevo_comentario.php','comentario='+comentario+'&id_tarea=<?= $id_tarea ?>',function(data) {
-		
+		var datos = $('#fileupload').serialize();
+		$.post('ac/nuevo_comentario.php',datos+'&id_tarea=<?= $id_tarea ?>',function(data) {
 			if(data==1){
-				
 				window.location.reload();
-				
 			}else{
-				
 				App.UnblockUI();
 				alert(data);
-				
 			}
-			
-		
 		});
-		
-		
-	
 	});
 
-	$('#completada').click(function() {
+	$('#destino_completada').click(function() {
 		
+		App.blockUI({
+	            message: 'Enviando a Revisión...'
+	    });
+	    
 		$.get('ac/marcar_completada.php','id_tarea=<?=$id_tarea?>',function(data) {
-
 			if(data==1){
-				window.location = 'index.php?Modulo=Tareas';
+				window.location.reload();
 			}else{
+				App.UnblockUI();
 				alert(data);
 			}
-			
-		});
-		
-	
+		});	
 	});
+	
+	$('#remite_termina').click(function() {
+		
+		App.blockUI({
+	            message: 'Cerrando Tarea...'
+	    });
+	    
+		$.get('ac/marcar_finalizada.php','id_tarea=<?=$id_tarea?>',function(data) {
+			if(data==1){
+				window.location.reload();
+			}else{
+				App.UnblockUI();
+				alert(data);
+			}
+		});	
+	});
+	
+	$('#remite_reabre').click(function() {
+		
+		App.blockUI({
+	            message: 'Reabriendo Tarea...'
+	    });
+	    
+		$.get('ac/marcar_reabrir.php','id_tarea=<?=$id_tarea?>',function(data) {
+			if(data==1){
+				window.location.reload();
+			}else{
+				App.UnblockUI();
+				alert(data);
+			}
+		});	
+	});
+	
 
+	
 });			
 			
 </script>
@@ -289,9 +344,23 @@ Para enviar el comentario.
 				</div>                                                            
 			    <p style="font-size: 16px;line-height: 30px"><?= $tarea->descripcion ?> 
 			    </p>
+			    			
 			</div>
 			
-			<p style="display:<?=$btn_compeltada?>"><br/><a role="button" id="completada" class="btn green"><i class="fa fa-check"></i>Marcar como Completada</a></p>
+			<div class="" style="display:flex;margin:0px;padding:0px">
+				
+				<div class="pull-right" style="display: <?= $destino_completada ?>">
+					<br/><a role="button" id="destino_completada" class="btn blue acccion"><i class="fa fa-check-square-o"></i> Enviar a Revisión</a>
+				</div>
+				<div class="pull-right" style="display: <?= $remite_finaliza ?>">
+					<p><br/><a role="button" id="remite_termina"  class="btn green acccion"><i class="fa fa-check"></i> Tarea Completada</a></p>
+				</div>&nbsp;&nbsp;&nbsp;&nbsp;
+				
+				<div class="pull-right" style="display: <?= $remite_reabrir ?>">
+					<p><br/><a role="button" id="remite_reabre" class="btn red acccion"><i class="fa fa-times"></i>  Reabrir Tarea</a></p>
+				</div>
+				
+			</div>
 						
 <?
 if($hay_adjuntos):	
@@ -343,21 +412,37 @@ if($hay_comentarios):
 		
 		if($comentario->id_usuario==0):
 			$nombre = 'Evisur App';
-			$foto = 'display.jpeg';
 			$badge = '<span class="badge badge-empty badge-danger"></span></span>';
 		else:
 			$nombre = $comentario->nombre;
 			$badge = '<span class="badge badge-empty badge-success"></span>';
-			$foto = 'assets/pages/media/users/avatar6.jpg';
 
 		endif;
+		
+		if($comentario->foto):	
+			$foto = $comentario->foto;
+		else:
+			$foto = 'display.jpeg';		
+		endif;
+		
+		$sql = "SELECT*FROM adjuntos WHERE id_comentario = ".$comentario->id_comentario;
+		$q = mysql_query($sql);
+		$adjuntos_comentario = array();
+
+		while($datos = mysql_fetch_object($q)):
+			$adjuntos_comentario[] = $datos;
+		endwhile;
+		
+		$hay_adjuntos_com = count($adjuntos_comentario);
+
+
 ?>
 
 				            
 			                <div class="item">
 			                    <div class="item-head">
 			                        <div class="item-details">
-			                            <img class="item-pic rounded" src="http://localhost/evisur/<?= $foto ?>">
+			                            <img class="item-pic rounded" src="files/<?= $foto ?>">
 			                            <span class="item-name primary-link"><?= mayus($nombre) ?></span>
 			                            <span class="item-label"><?= $fechaHoraComentario($comentario->fecha_hora) ?></span>
 			                        </div>
@@ -365,7 +450,24 @@ if($hay_comentarios):
 			                            <?= $badge ?>
 			                        </span>
 			                    </div>
-			                    <div class="item-body" style="margin-left: 50px"> <?= $comentario->comentario ?> </div>
+			                    <div class="item-body" style="margin-left: 50px"> <?= $comentario->comentario ?> 
+								
+<?
+		if($hay_adjuntos_com):	
+?>
+							<br><br>
+<?
+			foreach($adjuntos_comentario as $adjunto_com):	
+?>
+							<a href="files/<?= $adjunto_com->archivo ?>" target="_blank">
+							<?= $adjunto_com->archivo ?>
+							</a><br/>
+<? 
+			endforeach;
+		endif; ?>
+
+							
+			                    </div>
 			                </div>
 
 <?
@@ -384,6 +486,9 @@ endif;
 			    </div>
 			</div>
 	
+<form class="inbox-compose form-horizontal" id="fileupload" action="#" method="POST" enctype="multipart/form-data" style="border:0px">
+
+
 			<div class="portlet light ">
 				<div class="portlet-title">
 					<div class="caption caption-md">
@@ -391,14 +496,110 @@ endif;
 						<span class="caption-subject font-green-steel bold uppercase">Nuevo Comentario</span>
 					</div>
 				</div>
-	        
+
+
+	
+	
 				<div class="portlet-body">
 					<div class="general-item-list">
 						<textarea class="inbox-editor  form-control" name="mensaje" id="mensaje" rows="6" placeholder="Escriba un comentario..."></textarea>
 						<p><br/><a role="button" class="btn green" id="enviar_comentario"><i class="fa fa-check"></i>Enviar</a></p>
 					</div>
+					
+    <div class="inbox-compose-attachment">
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <span class="btn green btn-outline fileinput-button">
+            <i class="fa fa-plus"></i>
+            <span> Agregar archivos... </span>
+            <input type="file" name="files[]" multiple> </span>
+        <!-- The table listing the files available for upload/download -->
+        <table role="presentation" class="table table-striped margin-top-10">
+            <tbody class="files"> </tbody>
+        </table>
+    </div>
+
+					
+					
 				</div>
 			</div>
+			
+<!-- Comienza Adjuntos--><!-- Comienza Adjuntos--><!-- Comienza Adjuntos--><!-- Comienza Adjuntos-->
+<!-- Comienza Adjuntos--><!-- Comienza Adjuntos--><!-- Comienza Adjuntos--><!-- Comienza Adjuntos-->
+
+    
+    <!-- The blueimp Gallery widget -->
+	<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+	    <div class="slides"> </div>
+	    <h3 class="title"></h3>
+	    <a class="prev"> ‹ </a>
+	    <a class="next"> › </a>
+	    <a class="close white"> </a>
+	    <a class="play-pause"> </a>
+	    <ol class="indicator"> </ol>
+	</div>
+    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+    <script id="template-upload" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
+    	<tr class="template-upload fade">
+		    <td width="100">
+		        <span class="preview"></span>
+		    </td>
+		    <td align="left" valign="top">
+		        {%=file.name%}
+		        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+		            <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+		        </div>
+		        <strong class="error text-danger label label-danger"></strong>
+		        
+		    </td>
+		    <td width="150">
+		        <p class="size">Processing...</p>
+		    </td>
+		    <td align="right" width="100"> {% if (!i && !o.options.autoUpload) { %}
+		        <button class="btn blue start" disabled>
+		            <i class="fa fa-upload"></i>
+		            <span>Subir</span>
+		        </button> {% } %} {% if (!i) { %}
+		        <button class="btn red cancel">
+		            <i class="fa fa-ban"></i>
+		            <span>Cancelar</span>
+		        </button> {% } %} </td>
+		</tr> {% } %} </script>
+        <!-- The template to display files available for download -->
+	<script id="template-download" type="text/x-tmpl"> {% for (var i=0, file; file=o.files[i]; i++) { %}
+		    <tr class="template-download fade">
+		        <td width="100">
+			        <input type="hidden" name="archivos[]" value="{%=file.name%}" />
+		            <span class="preview"> {% if (file.thumbnailUrl) { %}
+		                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery>
+		                    <img src="{%=file.thumbnailUrl%}">
+		                </a> {% } %} </span>
+		        </td>
+		        <td align="left" valign="top">
+		             {% if (file.url) { %}
+		                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl? 'data-gallery': ''%}>{%=file.name%}</a> {% } else { %}
+		                <span>{%=file.name%}</span> {% } %}  {% if (file.error) { %}
+		            <div>
+		                <span class="label label-danger">Error</span> {%=file.error%}</div> {% } %} </td>
+		        <td width="150">
+		            <span class="size" style="margin-top: 0px;">{%=o.formatFileSize(file.size)%}</span>
+		        </td>
+		        <td width="100" align="right"> {% if (file.deleteUrl) { %}
+		            <button class="btn red delete btn-sm" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'
+		                {% } %}>
+		                <i class="fa fa-trash-o"></i>
+		                <span>Borrar</span>
+		            </button>
+		            {% } else { %}
+		            <button class="btn yellow cancel btn-sm">
+		                <i class="fa fa-ban"></i>
+		                <span>Cancelar</span>
+		            </button> {% } %} </td>
+		    </tr> {% } %} </script>
+
+</form>
+
+<!-- Termina Adjuntos --><!-- Termina Adjuntos --><!-- Termina Adjuntos --><!-- Termina Adjuntos -->
+<!-- Termina Adjuntos --><!-- Termina Adjuntos --><!-- Termina Adjuntos --><!-- Termina Adjuntos -->
                                                 
 <!-- Termina inbox body y col-md-9 -->		
 		</div>

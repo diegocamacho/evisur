@@ -34,6 +34,8 @@ while($datos = mysql_fetch_object($q)):
 	$tareas[] = $datos;
 
 endwhile; 
+
+$hay_tareas = count($tareas);
 ?>
 
 <div class="col-md-9"> 
@@ -138,10 +140,12 @@ endwhile;
 			
 			
 			<? endforeach; ?>
-			         
+
 			    </tbody>
 			</table>
-		    
+			<? if(!$hay_tareas): ?>
+		    			         <center><h4><p>No hay tareas recibidas.</p></h4></center>
+			<? endif; ?>
 	    </div>
 	</div>
 </div>
