@@ -76,7 +76,7 @@ endwhile;
 
 <? foreach($usuario as $user): ?>
                                                             <li>
-                                                                <a href="javascript:;">
+                                                                <a href="javascript:;" style="cursor: default">
                                                                     <img class="contact-pic" src="assets/pages/media/users/avatar6.jpg">
                                                                     <span class="contact-name">
                                                                     	<?= mayus($user->nombre) ?> 
