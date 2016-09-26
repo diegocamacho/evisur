@@ -62,7 +62,7 @@ $q=mysql_query($sql);
 					          <td><?=$ft['tipo_usuario']?></td>
 					          <td><?=$ft['celular']?></td>
 					          <td><?=$ft['email']?></td>
-					          <td><? if($ft['ultimo_acceso']){ echo $ft['ultimo_acceso']; }else{ echo "NUNCA"; }?></td>
+					          <td><? if($ft['ultimo_acceso']){ echo devuelveFechaHora($ft['ultimo_acceso']); }else{ echo "NUNCA"; }?></td>
 					          <td align="right">
 					          		<img src="assets/global/img/loading-spinner-grey.gif" border="0" id="load_<?=$ft['id_usuario']?>" width="19" class="oculto" />
 					          	<? if($ft['activo']==1){ ?>
@@ -158,6 +158,15 @@ $q=mysql_query($sql);
 					</select>
 				</div>
 			</div>
+			
+			<div class="form-group">
+				<label for="precio_venta" class="col-md-3 control-label">Foto de perfil</label>
+				<div class="col-md-9" id="fotos">
+					<div id="upload_dropzone" class="dropzone" style="border:none; background-color:white"></div>
+				</div>
+			</div>
+			
+			
 
 		</form>
 		      
@@ -257,8 +266,8 @@ $q=mysql_query($sql);
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
-
+<script src="js/dropzone.js"></script>		    
+		    
 <!--- Js -->
 <script>
 $(function(){
@@ -314,6 +323,51 @@ $(function(){
 		$('#msg_error2').hide();
 		$('#msg_error').hide();
 	});
+	
+	//DROPZONE
+    $("#upload_dropzone").dropzone({ 
+        url: "upload_foto.php",
+        paramName: "archivo",
+        maxFiles: 1,
+        maxFilesize: 10,
+        acceptedFiles: "image/jpg,image/jpeg,image/png",
+        dictDefaultMessage: "<a class='btn btn-circle btn-info btn-sm'>Arrastre o de Clic para cambiar la foto</a><br><p><i>Solo imagenes en formato jpg o png</i></p>",
+        dictInvalidFileType: "No puede subir este tipo de archivo, seleccione uno válido",
+        dictFileTooBig: "El tamaño del archivo excede el permitido (10 Mb)",
+        dictMaxFilesExceeded:"Solo puede subir una imagen a la vez",
+        addRemoveLinks: true,
+        dictRemoveFile: "Eliminar Archivo",
+        dictCancelUpload: "Cancela",
+        success: function (file, response) {
+            var imgName = response;
+            //$('.fotos').hide();
+            $('#foto-usuario').remove();
+            //$('#foto-usuario').attr('src',imgName);
+            setTimeout(function(){ $('#fotos').append('<input type="hidden" value="'+imgName+'" name="foto_final" id="foto-usuario">'); }, 1000);         
+        }});
+
+	//DROPZONE
+    $("#upload_dropzone_2").dropzone({ 
+        url: "upload_foto.php",
+        paramName: "archivo",
+        maxFiles: 1,
+        maxFilesize: 10,
+        acceptedFiles: "image/jpg,image/jpeg,image/png",
+        dictDefaultMessage: "<a class='btn btn-circle btn-info btn-sm'>Arrastre o de Clic para cambiar la foto</a><br><p><i>Solo imagenes en formato jpg o png</i></p>",
+        dictInvalidFileType: "No puede subir este tipo de archivo, seleccione uno válido",
+        dictFileTooBig: "El tamaño del archivo excede el permitido (10 Mb)",
+        dictMaxFilesExceeded:"Solo puede subir una imagen a la vez",
+        addRemoveLinks: true,
+        dictRemoveFile: "Eliminar Archivo",
+        dictCancelUpload: "Cancela",
+        success: function (file, response) {
+            var imgName = response;
+            $('#foto_edita').remove();
+            $('#foto-usuario-edita').remove();
+            //$('#foto-usuario').attr('src',imgName);
+            setTimeout(function(){ $('#fotos2').append('<input type="hidden" value="'+imgName+'" name="foto_final" id="foto-usuario-edita">'); }, 1000);         
+        }});
+
 });
 
 function EditaUsuario(){
@@ -363,6 +417,7 @@ function NuevoUsuario(){
 	$('.btn_ac').hide();
 	$('#load').show();
 	var datos=$('#frm_guarda').serialize();
+	alert(datos);
 	$.post('ac/nuevo_usuario.php',datos,function(data){
 	    if(data==1){
 			window.open("?Modulo=Usuarios&msg=1", "_self");

@@ -24,6 +24,7 @@ if(!$_POST['pass']) exit("Debe escribir su contraseña");
 					$_SESSION['s_id'] = $row->id_usuario;
 					$_SESSION['s_tipo'] = $row->id_tipo_usuario;
 					$_SESSION['s_nombre'] = $row->nombre;
+					$_SESSION['s_display'] = $row->foto;
 				}
 			if(mysql_query("UPDATE usuarios SET ultimo_acceso='$fecha_hora' WHERE id_usuario='".$_SESSION['s_id']."'")){
 				echo "1";

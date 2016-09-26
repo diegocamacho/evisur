@@ -4,6 +4,7 @@ include("../includes/db.php");
 include("../includes/funciones.php");
 
 extract($_POST);
+//print_r($_POST);
 
 //Validamos datos completos
 if(!$id_tipo_usuario) exit("Seleccione un tipo de usuario.");
@@ -30,7 +31,7 @@ if($valida>0){
 	exit("La cuenta de correo ".$email." ya esta en uso.");
 }else{
 	//Insertamos datos
-	$sql="INSERT INTO usuarios (id_tipo_usuario,nombre,email,pass,celular) VALUES ('$id_tipo_usuario','$nombre','$email','$password','$celular')";
+	$sql="INSERT INTO usuarios (id_tipo_usuario,nombre,email,pass,celular,foto) VALUES ('$id_tipo_usuario','$nombre','$email','$password','$celular','$foto_final')";
 	$q=mysql_query($sql);
 	if($q){
 		echo "1";

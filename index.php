@@ -64,6 +64,7 @@ Mtnic Version: 4.6
         <link href="assets/layouts/layout3/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" /> </head>
+        <link href="js/dropzone.css" rel="stylesheet" type="text/css" />
     <!-- END HEAD -->
 	    <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 
@@ -124,7 +125,7 @@ Mtnic Version: 4.6
                                         <!-- BEGIN USER LOGIN DROPDOWN -->
                                         <li class="dropdown dropdown-user dropdown-dark">
                                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                                <img alt="" class="img-circle" src="display.jpeg">
+                                                <img alt="" class="img-circle" src="<? if($s_display){ echo "files/".$s_display; }else{ echo "display.jpeg"; }?>">
                                                 <span class="username username-hide-mobile"><?=$s_nombre?></span>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-default">
@@ -183,10 +184,10 @@ Mtnic Version: 4.6
                                 <!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
                                 <div class="hor-menu  ">
                                     <ul class="nav navbar-nav">
-	                                    <li class="active"><a href="index.php">Escritorio</a></li>
+	                                    <li <? if(!$menu){ ?>class="active"<?}?>><a href="index.php">Escritorio</a></li>
 	                                    
-	                                    <li><a href="?Modulo=Tareas">Tareas</a></li>
-                                        
+	                                    <li <? if($menu=="Tareas"){ ?>class="active"<?}?>><a href="?Modulo=Tareas">Tareas</a></li>
+                                        <? if($s_tipo==1){ ?>
                                         <li class="menu-dropdown classic-menu-dropdown">
                                             <a href="javascript:;"> Compras
                                                 <span class="arrow"></span>
@@ -231,7 +232,7 @@ Mtnic Version: 4.6
                                                 <li><a href="?Modulo=Usuarios" class="nav-link ">Usuarios</a></li>
                                             </ul>
                                         </li>
-                                        
+                                        <? } ?>
                                     </ul>
                                 </div>
                                 <!-- END MEGA MENU -->
