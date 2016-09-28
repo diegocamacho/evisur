@@ -1,6 +1,7 @@
 <?
 include("../includes/session.php");
 include("../includes/db.php");
+date_default_timezone_set ("America/Cancun");
 
 extract($_POST);
 

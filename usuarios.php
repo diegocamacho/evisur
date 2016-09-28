@@ -256,7 +256,7 @@ $q=mysql_query($sql);
 			<div class="form-group">
 				<label for="fotos2" class="col-md-3 control-label">Foto</label>
 				<div class="col-md-9" id="fotos2">
-					<center><img class="media-object" style="width: 128px; height: 128px;" src="" id="foto_edita"></center>
+					<center><img class="media-object" style="height: 64px;" src="" id="foto_edita"></center>
 					<div id="upload_dropzone_2" class="dropzone" style="border:none; background-color:white"></div>
 					<input type="hidden" name="foto_final" id="foto-usuario-edita">
 				</div>
@@ -296,7 +296,7 @@ $(function(){
 	   		var apellido=datos[2];
 	   		var email=datos[3];
 	   		var celular=datos[4];
-	   		$('#foto_edita').attr('src','files/thumb_'+datos[5]);
+	   		$('#foto_edita').attr('src','files/'+datos[5]);
 	   		$('#foto-usuario-edita').val(datos[5]);
 	   		
 	   		$('#id_tipo_usuario').val(id_tipo_usuario);
@@ -428,7 +428,6 @@ function NuevoUsuario(){
 	$('.btn_ac').hide();
 	$('#load').show();
 	var datos=$('#frm_guarda').serialize();
-	alert(datos);
 	$.post('ac/nuevo_usuario.php',datos,function(data){
 	    if(data==1){
 			window.open("?Modulo=Usuarios&msg=1", "_self");

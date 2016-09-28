@@ -331,7 +331,7 @@ $(function() {
 			<div class="inbox-view-info">
 			    <div class="row">
 			        <div class="col-md-12">
-			            <img src="http://localhost/evisur/assets/pages/media/users/avatar6.jpg" class="inbox-author">
+			            <img height="30" src="files/<?= $remitente->foto ?>" class="inbox-author">
 			            Por <span class="sbold"><?= mayus($remitente->nombre) ?> </span> · 
 			            <span class="sbold"><?= $string_fecha ?></span> a las <?= $hora ?>
 			        </div>

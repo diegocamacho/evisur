@@ -1,6 +1,6 @@
 <?
 //Utilerias
-date_default_timezone_set ("America/Bogota");
+date_default_timezone_set ("America/Cancun");
 $fechahora=date("Y-m-d H:i:s");
 $fecha_actual=date("Y-m-d");
 //Valida cadena de fecha

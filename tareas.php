@@ -85,11 +85,9 @@ endwhile;
 ?>
                                                             <li>
                                                                 <a href="javascript:;" style="cursor: default">
-                                                                    <img class="contact-pic" src="files/<?= $foto ?>">
                                                                     <span class="contact-name">
                                                                     	<?= mayus($user->nombre) ?> 
                                                                     </span>
-                                                                    <span class="contact-status bg-green"></span>
                                                                     <span class="badge badge-info">
                                                                     <?=dias_restantes_formato(fechaSinHora($user->ultimo_acceso))?>
                                                                     </span>
