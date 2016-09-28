@@ -4,7 +4,9 @@ $f = $_GET['f'];
 
 $revision_sql1 = 0;
 $revision_sql2 = 0;
-$mostrar_li = 'none';
+$mostrar_li = 'inline';
+
+$hover = "background:#3598dc;color:white";
 
 switch($f):
 	case 'revision':
@@ -12,6 +14,7 @@ switch($f):
 		$sub = 'Tareas en espera de mi revisión.';
 		$add = 'en Revisión';
 		$mostrar_li = 'inline';
+		$revision_activo = $hover;
 	break;
 	case 'completadas':
 		$revision_sql1 = 1;
@@ -19,9 +22,11 @@ switch($f):
 		$add = ' Completadas';
 		$sub = 'Tareas terminadas con éxito.';
 		$mostrar_li = 'inline';
+		$completadas_activo = $hover;
 	break;
 	default:	
 		$sub = 'Tareas pendientes.';
+		$pendientes_activo = $hover;
 endswitch;
 
 $sql = "SELECT tareas.*, usuarios.nombre FROM tareas JOIN usuarios ON tareas.id_destino = usuarios.id_usuario WHERE id_remite = $s_id_usuario AND tareas.activo = 1 AND terminado_creador = $revision_sql1 AND terminado_destino = $revision_sql2 ORDER BY leido ASC, fecha_limite ASC";
@@ -58,16 +63,15 @@ $hay_tareas = count($tareas);
 			        <tr>
 			            <th class="pagination-control" colspan="5">
 			                <div class="btn-group input-actions">
-			                    
-			                    <a class="btn btn-sm blue btn-outline sbold"  style="display: <?= $mostrar_li ?>" href="?Modulo=Tareas&tipo=enviadas"> 
+			                    <a class="btn btn-sm blue btn-outline sbold"  style="display: <?= $mostrar_li ?>; <?=$pendientes_activo?>" href="?Modulo=Tareas&tipo=enviadas"> 
 			                                <i class="fa fa-hourglass-half"></i> Ver Pendientes </a>
 			                    </a>
 
-			                    <a class="btn btn-sm blue btn-outline sbold" href="?Modulo=Tareas&tipo=enviadas&f=revision"> 
+			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$revision_activo?>" href="?Modulo=Tareas&tipo=enviadas&f=revision"> 
 			                                <i class="fa fa-search"></i> Ver en Revisión </a>
 			                    </a>
 			                    
-			                    <a class="btn btn-sm blue btn-outline sbold" href="?Modulo=Tareas&tipo=enviadas&f=completadas"> 
+			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$completadas_activo?>" href="?Modulo=Tareas&tipo=enviadas&f=completadas"> 
 			                                <i class="fa fa-check"></i> Ver Completadas </a>
 			                    </a>
 
