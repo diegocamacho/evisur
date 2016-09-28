@@ -56,30 +56,21 @@ $hay_tareas = count($tareas);
 			<table class="table table-striped table-advance table-hover">
 			    <thead>
 			        <tr>
-			            <th colspan="3">
-			
-			            </th>
-			            <th class="pagination-control" colspan="3">
+			            <th class="pagination-control" colspan="5">
 			                <div class="btn-group input-actions">
-			                    <a class="btn btn-sm blue btn-outline dropdown-toggle sbold" href="javascript:;" data-toggle="dropdown"> Ver
-			                        <i class="fa fa-angle-down"></i>
-			                    </a>
-			                    <ul class="dropdown-menu">
-			                        <li style="display: <?= $mostrar_li ?>">
-			                            <a href="?Modulo=Tareas">
+				                
+			                    <a class="btn btn-sm blue btn-outline sbold"  style="display: <?= $mostrar_li ?>" href="?Modulo=Tareas"> 
 			                                <i class="fa fa-hourglass-half"></i> Ver Pendientes </a>
-			                        </li>
-			                        <li>
-			                            <a href="?Modulo=Tareas&f=revision">
-			                                <i class="fa fa-search"></i> Ver en Revisión </a>
-			                        </li>
-			                        
-			                        <li>
-			                            <a href="?Modulo=Tareas&f=completadas">
-			                                <i class="fa fa-check"></i> Ver Completadas </a>
-			                        </li>
+			                    </a>
 
-			                    </ul>
+			                    <a class="btn btn-sm blue btn-outline sbold" href="?Modulo=Tareas&f=revision"> 
+			                                <i class="fa fa-search"></i> Ver en Revisión </a>
+			                    </a>
+			                    
+			                    <a class="btn btn-sm blue btn-outline sbold" href="?Modulo=Tareas&f=completadas"> 
+			                                <i class="fa fa-check"></i> Ver Completadas </a>
+			                    </a>
+			                    
 			                </div>
 			            </th>
 			        </tr>
@@ -144,7 +135,7 @@ $hay_tareas = count($tareas);
 			    </tbody>
 			</table>
 			<? if(!$hay_tareas): ?>
-		    			         <center><h4><p>No hay tareas recibidas.</p></h4></center>
+		    			         <center><h4><p>No hay tareas.</p></h4></center>
 			<? endif; ?>
 	    </div>
 	</div>
