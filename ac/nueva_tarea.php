@@ -22,7 +22,7 @@ $nombre=limpiaStr($nombre,1,1);*/
 $asunto=limpiaStr($asunto,1,1);
 $mensaje=escapar($mensaje,0);
 
-
+$mensaje = str_replace("\n", "<br/>", $mensaje);
 
 	//Insertamos datos
 	$sql="INSERT INTO tareas (id_remite,id_destino,id_proyecto,fecha_hora_creacion,fecha_limite,asunto,descripcion,prioridad,activo) VALUES ('$s_id_usuario','$id_destino','$id_proyecto','$fechahora','$fecha_limite','$asunto','$mensaje','$prioridad','1')";
