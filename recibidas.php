@@ -8,6 +8,17 @@ $mostrar_li = 'inline';
 
 $hover = "background:#3598dc;color:white";
 
+$sql = "SELECT*FROM tareas WHERE id_destino = '$s_id_usuario' AND terminado_creador = 0 AND terminado_destino = 0 AND activo = 1";
+$q = mysql_query($sql);
+$pendientes = mysql_num_rows($q);
+
+$sql = "SELECT*FROM tareas WHERE id_destino = '$s_id_usuario' AND terminado_creador = 0 AND terminado_destino = 1 AND activo = 1";
+$q = mysql_query($sql);
+$revision = mysql_num_rows($q);
+
+$cuantas_pendientes = $pendientes;
+$cuantas_revision = $revision;
+
 switch($f):
 	case 'revision':
 		$revision_sql2 = 1;
@@ -64,15 +75,15 @@ $hay_tareas = count($tareas);
 			            <th class="pagination-control" colspan="5">
 			                <div class="btn-group input-actions">
 			                    <a class="btn btn-sm blue btn-outline sbold"  style="display: <?= $mostrar_li ?>; <?=$pendientes_activo?>" href="?Modulo=Tareas"> 
-			                                <i class="fa fa-hourglass-half"></i> Ver Pendientes </a>
+			                                <i class="fa fa-hourglass-half"></i> Pendientes (<?= $cuantas_pendientes ?>) </a>
 			                    </a>
 
 			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$revision_activo?>" href="?Modulo=Tareas&f=revision"> 
-			                                <i class="fa fa-search"></i> Ver en Revisión </a>
+			                                <i class="fa fa-search"></i> En Revisión (<?= $cuantas_revision ?>) </a>
 			                    </a>
 			                    
 			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$completadas_activo?>" href="?Modulo=Tareas&f=completadas"> 
-			                                <i class="fa fa-check"></i> Ver Completadas </a>
+			                                <i class="fa fa-check"></i> Completadas </a>
 			                    </a>
 			                    
 			                </div>

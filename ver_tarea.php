@@ -413,17 +413,22 @@ if($hay_comentarios):
 		if($comentario->id_usuario==0):
 			$nombre = 'Evisur App';
 			$badge = '<span class="badge badge-empty badge-danger"></span></span>';
+			$foto = 'bot_icon.png';
 		else:
 			$nombre = $comentario->nombre;
 			$badge = '<span class="badge badge-empty badge-success"></span>';
 
+				if($comentario->foto):	
+					$foto = $comentario->foto;
+				else:
+					$foto = 'display.jpeg';		
+				endif;
+
 		endif;
 		
-		if($comentario->foto):	
-			$foto = $comentario->foto;
-		else:
-			$foto = 'display.jpeg';		
-		endif;
+
+		
+		
 		
 		$sql = "SELECT*FROM adjuntos WHERE id_comentario = ".$comentario->id_comentario;
 		$q = mysql_query($sql);
