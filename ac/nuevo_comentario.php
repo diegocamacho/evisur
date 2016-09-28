@@ -8,7 +8,7 @@ extract($_POST);
 if(!mensaje) exit("Escriba un comentario.");
 if(!$id_tarea) exit("No ID");
 
-$mensaje = str_replace("\n", "<br/>", $mensaje);
+$mensaje = str_replace("\n", "<br/><br/>", $mensaje);
 
 $hoy = date('Y-m-d H:i:s');
 //Updateamos el estado
