@@ -342,7 +342,7 @@ $(function() {
 				<div class="alert alert-<?= $color ?>">
 					<?= $msg ?>
 				</div>                                                            
-			    <p style="font-size: 16px;line-height: 30px"><?= $tarea->descripcion ?> 
+			    <p style="font-size: 16px;"><?= $tarea->descripcion ?> 
 			    </p>
 			    			
 			</div>
