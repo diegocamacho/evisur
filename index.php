@@ -224,7 +224,8 @@ Mtnic Version: 4.6
                                                 <span class="arrow"></span>
                                             </a>
                                             <ul class="dropdown-menu pull-left">
-                                                <li><a href="#" class="nav-link ">Productos</a></li>
+                                                <li><a href="?Modulo=Productos" class="nav-link ">Productos</a></li>
+                                                <li><a href="?Modulo=Categorias" class="nav-link ">Categorías de Productos</a></li>
                                                 <li><a href="#" class="nav-link ">Proveedores</a></li>
                                                 <li><a href="#" class="nav-link ">Empleados</a></li>
                                                 <li><a href="#" class="nav-link ">Prototipos</a></li>
@@ -280,6 +281,14 @@ Mtnic Version: 4.6
 							    		
 							    		case 'Proyectos':
 							    		include("proyectos.php");	
+							    		break;
+							    		
+							    		case 'Productos':
+							    		include("productos.php");	
+							    		break;
+							    		
+							    		case 'Categorias':
+							    		include("categorias.php");	
 							    		break;
 							    		
 							    		//Reportes
