@@ -224,8 +224,13 @@ Mtnic Version: 4.6
                                                 <span class="arrow"></span>
                                             </a>
                                             <ul class="dropdown-menu pull-left">
-                                                <li><a href="?Modulo=Productos" class="nav-link ">Productos</a></li>
-                                                <li><a href="?Modulo=Categorias" class="nav-link ">Categorías de Productos</a></li>
+	                                            <li class="dropdown-submenu ">
+                                                    <a href="javascript:;" class="nav-link nav-toggle ">Productos<span class="arrow"></span></a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="?Modulo=Productos" class="nav-link ">Lista de Productos</a></li>
+                                                     	<li><a href="?Modulo=Categorias" class="nav-link ">Categorías de Prodcutos</a></li>   
+                                                    </ul>
+                                                </li>
                                                 <li><a href="#" class="nav-link ">Proveedores</a></li>
                                                 <li><a href="#" class="nav-link ">Empleados</a></li>
                                                 <li><a href="#" class="nav-link ">Prototipos</a></li>
