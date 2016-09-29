@@ -19,6 +19,10 @@ $revision = mysql_num_rows($q);
 $cuantas_pendientes = $pendientes;
 $cuantas_revision = $revision;
 
+if(!$f):
+$pulsar = ($cuantas_revision>0) ? 'pulsar' : '';
+endif;
+
 switch($f):
 	case 'revision':
 		$revision_sql2 = 1;
@@ -53,7 +57,19 @@ endwhile;
 
 $hay_tareas = count($tareas);
 ?>
-
+<script>
+$(function() {
+	$("#pulsar").pulsate({
+	  color: '#3598dc',
+	  reach: 30,
+	  speed: 1000,
+	  pause: 0,
+	  glow: true,
+	  repeat: false,
+	  onHover: false 
+	});
+});
+</script>
 <div class="col-md-9"> 
 	<div class="inbox-body">
 		<div class="row">
@@ -79,7 +95,8 @@ $hay_tareas = count($tareas);
 			                    </a>
 
 			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$revision_activo?>" href="?Modulo=Tareas&tipo=enviadas&f=revision"> 
-			                                <i class="fa fa-search"></i> En Revisión (<?= $cuantas_revision ?>) </a>
+			                                <i class="fa fa-search"></i><span id="<?= $pulsar ?>" style="border: 0"> En Revisión (<?= $cuantas_revision ?>) </span></a>
+			                                
 			                    </a>
 			                    
 			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$completadas_activo?>" href="?Modulo=Tareas&tipo=enviadas&f=completadas"> 

@@ -19,6 +19,10 @@ $revision = mysql_num_rows($q);
 $cuantas_pendientes = $pendientes;
 $cuantas_revision = $revision;
 
+if(!$f):
+//$pulsar = ($cuantas_revision>0) ? 'pulsar' : ''; //solo se muestra en enviadas, no en recibidas.
+endif;
+
 switch($f):
 	case 'revision':
 		$revision_sql2 = 1;
@@ -53,7 +57,19 @@ endwhile;
 
 $hay_tareas = count($tareas);
 ?>
-
+<script>
+$(function() {
+	$("#pulsar").pulsate({
+	  color: '#3598dc', // set the color of the pulse
+	  reach: 30,                              // how far the pulse goes in px
+	  speed: 1000,                            // how long one pulse takes in ms
+	  pause: 0,                               // how long the pause between pulses is in ms
+	  glow: true,                             // if the glow should be shown too
+	  repeat: false,                           // will repeat forever if true, if given a number will repeat for that many times
+	  onHover: false                          // if true only pulsate if user hovers over the element
+	});
+});
+</script>
 <div class="col-md-9"> 
 	<div class="inbox-body">
 		<div class="row">
@@ -74,12 +90,11 @@ $hay_tareas = count($tareas);
 			        <tr>
 			            <th class="pagination-control" colspan="5">
 			                <div class="btn-group input-actions">
-			                    <a class="btn btn-sm blue btn-outline sbold"  style="display: <?= $mostrar_li ?>; <?=$pendientes_activo?>" href="?Modulo=Tareas"> 
+				                    <a class="btn btn-sm blue btn-outline sbold" style="display: <?= $mostrar_li ?>; <?=$pendientes_activo?>" href="?Modulo=Tareas"> 
 			                                <i class="fa fa-hourglass-half"></i> Pendientes (<?= $cuantas_pendientes ?>) </a>
 			                    </a>
-
 			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$revision_activo?>" href="?Modulo=Tareas&f=revision"> 
-			                                <i class="fa fa-search"></i> En Revisión (<?= $cuantas_revision ?>) </a>
+			                                <i class="fa fa-search"></i><span id="<?= $pulsar ?>" style="border: 0"> En Revisión (<?= $cuantas_revision ?>) </span></a>
 			                    </a>
 			                    
 			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$completadas_activo?>" href="?Modulo=Tareas&f=completadas"> 

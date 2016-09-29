@@ -393,6 +393,8 @@ Mtnic Version: 4.6
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="assets/global/scripts/app.min.js" type="text/javascript"></script>
+		<script src="assets/global/plugins/jquery.pulsate.min.js" type="text/javascript"></script>        
+
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="assets/apps/scripts/inbox.js" type="text/javascript"></script>

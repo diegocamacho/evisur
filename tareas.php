@@ -29,6 +29,11 @@ $q = mysql_query($sql);
 $arr = mysql_fetch_assoc($q);
 $env = $arr['cuantos'];
 
+$sql = "SELECT COUNT(*) as cuantos FROM tareas WHERE id_remite = $s_id_usuario AND activo = 1 AND terminado_creador = 0 AND terminado_destino = 1";
+$q = mysql_query($sql);
+$arr = mysql_fetch_assoc($q);
+$env = $arr['cuantos']+$env;
+
 $sql = "SELECT*FROM usuarios WHERE activo = 1 ORDER BY ultimo_acceso DESC";
 $q = mysql_query($sql);
 
@@ -59,7 +64,7 @@ endwhile;
                                                             
                                                             <li class="<?= $activoEnviadas ?>">
                                                                 <a href="?Modulo=Tareas&tipo=enviadas" data-type="draft" data-title="Enviadas"> Enviadas
-                                                                    <span class="badge badge-warning"><?= $env ?></span>
+                                                                    <span class="badge badge-danger"><?= $env ?></span>
                                                                 </a>
                                                             </li>
                                                         </ul>
