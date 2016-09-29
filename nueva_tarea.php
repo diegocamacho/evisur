@@ -2,55 +2,22 @@
 include('includes/session.php');
 include('includes/db.php'); 
 include('includes/funciones.php');
+
+$id = $_GET['id_usuario'];
+
+if($id>0):
+	$id_usuario = $id;
+endif;
 ?>
 <div class="alert alert-danger " style="display: none;" role="alert" id="msg_error"></div>
-<!--<form class="inbox-compose form-horizontal" id="frm_guarda" >-->
 <form class="inbox-compose form-horizontal" id="fileupload" action="#" method="POST" enctype="multipart/form-data">
 
-<!--
-    <div class="inbox-compose-btn">
-        <button class="btn green">
-            <i class="fa fa-check"></i>Send</button>
-        <button class="btn default inbox-discard-btn">Discard</button>
-        <button class="btn default">Draft</button>
-    </div>
-    <div class="inbox-form-group mail-to">
-        <label class="control-label">To:</label>
-        <div class="controls controls-to">
-            <input type="text" class="form-control" name="to">
-            <span class="inbox-cc-bcc">
-                <span class="inbox-cc"> Cc </span>
-                <span class="inbox-bcc"> Bcc </span>
-            </span>
-        </div>
-    </div>
-    <div class="inbox-form-group input-cc display-hide">
-        <a href="javascript:;" class="close"> </a>
-        <label class="control-label">Cc:</label>
-        <div class="controls controls-cc">
-            <input type="text" name="cc" class="form-control"> </div>
-    </div>
-    <div class="inbox-form-group input-bcc display-hide">
-        <a href="javascript:;" class="close"> </a>
-        <label class="control-label">Bcc:</label>
-        <div class="controls controls-bcc">
-            <input type="text" name="bcc" class="form-control"> </div>
-    </div>-->
-    
     <div class="inbox-form-group">
         <label class="control-label" style="width: 120px;">Asunto:</label>
         <div class="controls" style="margin-left: 125px;">
-	        <input type="text" class="form-control" name="asunto" id="asunto" autocomplete="off">
+	        <input type="text" class="form-control" name="asunto" autofocus id="asunto" autocomplete="off">
 	    </div>
     </div>
-    <!--
-    <div class="inbox-form-group">
-        <label class="control-label" style="width: 120px;">Descripción:</label>
-        <div class="controls" style="margin-left: 125px;">
-	        <input type="text" class="form-control" name="descripcion">
-	    </div>
-    </div>
-    -->
     <div class="inbox-form-group">
         <label class="control-label" style="width: 120px;">Prioridad:</label>
         <div class="controls" style="margin-left: 135px;">
@@ -70,10 +37,17 @@ include('includes/funciones.php');
 				<?
 					$sq="SELECT * FROM usuarios WHERE activo=1 AND id_usuario !=$s_id_usuario ORDER BY nombre ASC";
 					$q=mysql_query($sq);
-					while($datos=mysql_fetch_assoc($q)){ 
+					while($datos=mysql_fetch_assoc($q)):
+					
+						if($id_usuario==$datos['id_usuario']):
+							$s = 'selected="selected"';
+						else:
+							unset($s);
+						endif;
+					
 				?>
-				<option value="<?=$datos['id_usuario']?>"><?=$datos['nombre']?></option>
-				<? } ?>
+				<option <?= $s ?> value="<?=$datos['id_usuario']?>"><?=$datos['nombre']?></option>
+				<? endwhile; ?>
 			</select>                                                											
 	    </div>
     </div>
@@ -117,10 +91,7 @@ include('includes/funciones.php');
             <tbody class="files"> </tbody>
         </table>
     </div>
-    
-    
-    
-    
+      
     <!-- The blueimp Gallery widget -->
 	<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
 	    <div class="slides"> </div>

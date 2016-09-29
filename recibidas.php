@@ -4,7 +4,20 @@ $f = $_GET['f'];
 
 $revision_sql1 = 0;
 $revision_sql2 = 0;
-$mostrar_li = 'none';
+$mostrar_li = 'inline';
+
+$hover = "background:#3598dc;color:white";
+
+$sql = "SELECT*FROM tareas WHERE id_destino = '$s_id_usuario' AND terminado_creador = 0 AND terminado_destino = 0 AND activo = 1";
+$q = mysql_query($sql);
+$pendientes = mysql_num_rows($q);
+
+$sql = "SELECT*FROM tareas WHERE id_destino = '$s_id_usuario' AND terminado_creador = 0 AND terminado_destino = 1 AND activo = 1";
+$q = mysql_query($sql);
+$revision = mysql_num_rows($q);
+
+$cuantas_pendientes = $pendientes;
+$cuantas_revision = $revision;
 
 switch($f):
 	case 'revision':
@@ -12,6 +25,7 @@ switch($f):
 		$sub = 'Tareas en espera de revisión.';
 		$add = 'en Revisión';
 		$mostrar_li = 'inline';
+		$revision_activo = $hover;
 	break;
 	case 'completadas':
 		$revision_sql1 = 1;
@@ -19,9 +33,11 @@ switch($f):
 		$add = ' Completadas';
 		$sub = 'Tareas terminadas con éxito.';
 		$mostrar_li = 'inline';
+		$completadas_activo = $hover;
 	break;
 	default:	
 		$sub = 'Tareas pendientes por hacer.';
+		$pendientes_activo = $hover;
 endswitch;
 
 $sql = "SELECT tareas.*, usuarios.nombre FROM tareas JOIN usuarios ON tareas.id_remite = usuarios.id_usuario WHERE id_destino = $s_id_usuario AND tareas.activo = 1 AND terminado_creador = $revision_sql1 AND terminado_destino = $revision_sql2 ORDER BY leido ASC, fecha_limite ASC";
@@ -58,17 +74,16 @@ $hay_tareas = count($tareas);
 			        <tr>
 			            <th class="pagination-control" colspan="5">
 			                <div class="btn-group input-actions">
-				                
-			                    <a class="btn btn-sm blue btn-outline sbold"  style="display: <?= $mostrar_li ?>" href="?Modulo=Tareas"> 
-			                                <i class="fa fa-hourglass-half"></i> Ver Pendientes </a>
+			                    <a class="btn btn-sm blue btn-outline sbold"  style="display: <?= $mostrar_li ?>; <?=$pendientes_activo?>" href="?Modulo=Tareas"> 
+			                                <i class="fa fa-hourglass-half"></i> Pendientes (<?= $cuantas_pendientes ?>) </a>
 			                    </a>
 
-			                    <a class="btn btn-sm blue btn-outline sbold" href="?Modulo=Tareas&f=revision"> 
-			                                <i class="fa fa-search"></i> Ver en Revisión </a>
+			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$revision_activo?>" href="?Modulo=Tareas&f=revision"> 
+			                                <i class="fa fa-search"></i> En Revisión (<?= $cuantas_revision ?>) </a>
 			                    </a>
 			                    
-			                    <a class="btn btn-sm blue btn-outline sbold" href="?Modulo=Tareas&f=completadas"> 
-			                                <i class="fa fa-check"></i> Ver Completadas </a>
+			                    <a class="btn btn-sm blue btn-outline sbold" style="<?=$completadas_activo?>" href="?Modulo=Tareas&f=completadas"> 
+			                                <i class="fa fa-check"></i> Completadas </a>
 			                    </a>
 			                    
 			                </div>
@@ -80,30 +95,31 @@ $hay_tareas = count($tareas);
 				    
 			<? foreach($tareas as $tarea): 
 			
-				if($tarea->leido == '0'): $l = 'unread'; $estrella = '<i class="fa fa-star"></i>'; else: $l = ''; $estrella = ''; endif;
-
-				$fecha = $tarea->fecha_limite;
-			
-				if($fecha==date('Y-m-d')):
-					$mostrar_fecha = 'Hoy';
-				else:
-					$mostrar_fecha = fechaLetraAlt($fecha);
-				endif;
-									
-				switch($tarea->prioridad):
-				case '1':
-					$prioridad = 'BAJA';
-					$class = 'success';
-				break;
-				case '2':
-					$prioridad = 'MEDIA';
-					$class = 'warning';
-				break;
-				case '3':
-					$prioridad = 'ALTA';
-					$class = 'danger';
-				break;
-				endswitch; 
+					if($tarea->leido == '0'): 
+						$l = 'unread'; 
+						$estrella = '<i class="fa fa-star"></i>'; 
+					else: 
+						$l = ''; 
+						$estrella = ''; 
+					endif;
+	
+					$fecha = $tarea->fecha_limite;
+					$mostrar_fecha = ($fecha==date('Y-m-d')) ? 'Hoy' : fechaLetraAlt($fecha);
+										
+					switch($tarea->prioridad):
+					case '1':
+						$prioridad = 'BAJA';
+						$class = 'success';
+					break;
+					case '2':
+						$prioridad = 'MEDIA';
+						$class = 'warning';
+					break;
+					case '3':
+						$prioridad = 'ALTA';
+						$class = 'danger';
+					break;
+					endswitch; 
 				
 
 			?>
