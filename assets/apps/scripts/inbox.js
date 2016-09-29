@@ -13,14 +13,15 @@ var AppInbox = function () {
 
     }
 
-    var loadCompose = function (el) {
-        var url = 'nueva_tarea.php';
+    var loadCompose = function (el,id = 0) {
 
-	App.blockUI(
-		{
-            message: 'Cargando...'
-        }
-	);
+        var url = 'nueva_tarea.php?id_usuario='+id;
+
+		App.blockUI(
+			{
+	            message: 'Cargando...'
+	        }
+		);
 
         // load the form via ajax
         $.ajax({
@@ -37,11 +38,9 @@ var AppInbox = function () {
                 $('#subtitulo').hide();
 
                 content.html(res);
-
                 initFileupload();
-
-                $('#asunto').focus();
                 Layout.fixContentHeight();
+
             },
             async: false
         });
@@ -59,6 +58,11 @@ var AppInbox = function () {
 
             $('.componer').on('click', function () {
                 loadCompose($(this));
+            });
+
+            $('.componer_sidebar').on('click', function () {
+	            var id = $(this).attr('id_usuario');
+                loadCompose($(this),id);
             });
 
 

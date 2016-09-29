@@ -1,6 +1,7 @@
 <?
 $tipo = $_GET['tipo'];
 $tarea = $_GET['tarea'];
+
 switch($tipo):
 	case 'enviadas';
 		$incluir = 'enviadas.php';
@@ -16,12 +17,7 @@ switch($tipo):
 		
 endswitch;
 
-
-if(is_numeric($tarea)):
-
-	$incluir = 'ver_tarea.php';
-
-endif;
+if(is_numeric($tarea)) $incluir = 'ver_tarea.php';
 
 $sql = "SELECT COUNT(*) as cuantos FROM tareas WHERE id_destino = $s_id_usuario AND activo = 1 AND terminado_creador = 0 AND terminado_destino = 0";
 $q = mysql_query($sql);
@@ -42,10 +38,10 @@ while($datos = mysql_fetch_object($q)):
 	$usuario[] = $datos;
 endwhile;
 
-//$incluir = 'ver_tarea.php';
 
 ?>
 <div class="container">
+	
                                     <div class="page-content-inner">
                                         <div class="inbox">
                                             <div class="row">
@@ -76,17 +72,14 @@ endwhile;
 
 <? foreach($usuario as $user): 
 	
-		if($user->foto):	
-			$foto = $user->foto;
-		else:
-			$foto = 'display.jpeg';		
-		endif;
-	
+		$foto = ($user->foto) ? $user->foto : 'display.jpeg';
+		$st = ($user->id_usuario==$s_id_usuario) ? 'style="display:none"' : '';
+
 ?>
-                                                            <li>
-                                                                <a href="javascript:;" style="cursor: default">
+                                                            <li <?= $st ?>>
+                                                                <a href="javascript:;" class="componer_sidebar" id_usuario="<?= $user->id_usuario ?>">
                                                                     <span class="contact-name">
-                                                                    	<?= mayus($user->nombre) ?> 
+                                                                    	<?= mayus($user->nombre) ?>
                                                                     </span>
                                                                     <span class="badge badge-info">
                                                                     <?=dias_restantes_formato(fechaSinHora($user->ultimo_acceso))?>

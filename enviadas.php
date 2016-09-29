@@ -95,31 +95,32 @@ $hay_tareas = count($tareas);
 				    
 			<? foreach($tareas as $tarea): 
 			
-				if($tarea->leido == '0'): $l = 'unread'; $estrella = '<i class="fa fa-star"></i>'; else: $l = ''; $estrella = ''; endif;
-
-				$fecha = $tarea->fecha_limite;
-			
-				if($fecha==date('Y-m-d')):
-					$mostrar_fecha = 'Hoy';
-				else:
-					$mostrar_fecha = fechaLetraAlt($fecha);
-				endif;
-									
-				switch($tarea->prioridad):
-				case '1':
-					$prioridad = 'BAJA';
-					$class = 'success';
-				break;
-				case '2':
-					$prioridad = 'MEDIA';
-					$class = 'warning';
-				break;
-				case '3':
-					$prioridad = 'ALTA';
-					$class = 'danger';
-				break;
-				endswitch; 
-				
+					if($tarea->leido == '0'): 
+						$l = 'unread'; 
+						$estrella = '<i class="fa fa-star"></i>'; 
+					else: 
+						$l = ''; 
+						$estrella = ''; 
+					endif;
+	
+					$fecha = $tarea->fecha_limite;
+					$mostrar_fecha = ($fecha==date('Y-m-d')) ? 'Hoy' : fechaLetraAlt($fecha);
+											
+					switch($tarea->prioridad):
+					case '1':
+						$prioridad = 'BAJA';
+						$class = 'success';
+					break;
+					case '2':
+						$prioridad = 'MEDIA';
+						$class = 'warning';
+					break;
+					case '3':
+						$prioridad = 'ALTA';
+						$class = 'danger';
+					break;
+					endswitch; 
+					
 
 			?>
 			        <tr onclick="window.location = '?Modulo=Tareas&tarea=<?= $tarea->id_tarea ?>'" class="<?= $l ?>">

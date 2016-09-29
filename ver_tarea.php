@@ -56,7 +56,7 @@ if($soydestino):
 		$destino_completada = 'inline';
 	endif;
 	
-	if($tarea->leido==0){
+	if($tarea->leido==0):
 
 		$sql = "UPDATE tareas SET leido = 1 WHERE id_tarea = $id_tarea";
 		$q = mysql_query($sql);
@@ -65,7 +65,7 @@ if($soydestino):
 		$sql = "INSERT INTO comentarios (id_tarea,fecha_hora,comentario)VALUES('$id_tarea','$hoy_fecha_hora','$mensaje_bot')";
 		$q = mysql_query($sql);
 
-	}
+	endif;
 
 endif;
 
@@ -172,7 +172,6 @@ else:
 endif;
 
 ########### TERMINA A LA VERGA COMPA. ###########
-
 
 $sql = "SELECT*FROM adjuntos WHERE id_tarea = $id_tarea AND id_comentario = 0";
 $q = mysql_query($sql);
@@ -423,13 +422,8 @@ if($hay_comentarios):
 				else:
 					$foto = 'display.jpeg';		
 				endif;
-
 		endif;
-		
-
-		
-		
-		
+				
 		$sql = "SELECT*FROM adjuntos WHERE id_comentario = ".$comentario->id_comentario;
 		$q = mysql_query($sql);
 		$adjuntos_comentario = array();
@@ -439,7 +433,6 @@ if($hay_comentarios):
 		endwhile;
 		
 		$hay_adjuntos_com = count($adjuntos_comentario);
-
 
 ?>
 
