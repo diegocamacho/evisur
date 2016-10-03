@@ -280,6 +280,10 @@ $q=mysql_query($sql);
 <!--- Js -->
 <script>
 $(function(){
+	$('form').submit(function(e){
+		e.preventDefault();	
+	});
+	
 	$(document).on('click', '[data-id]', function () {
 		$('.edit').val("");
 		$('.btn-modal').hide();

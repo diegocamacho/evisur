@@ -48,7 +48,8 @@ Mtnic Version: 4.6
         <link href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/clockface/css/clockface.css" rel="stylesheet" type="text/css" />
-        
+        <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<link href="assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" type="text/css" />
@@ -217,7 +218,7 @@ Mtnic Version: 4.6
                                             </ul>
                                         </li>
                                         
-                                        <li ><a href="#">Casas</a></li>
+                                        <li ><a href="?Modulo=Casas">Casas</a></li>
                                         
                                         <li class="menu-dropdown classic-menu-dropdown">
                                             <a href="javascript:;"> Catálogos
@@ -233,7 +234,7 @@ Mtnic Version: 4.6
                                                 </li>
                                                 <li><a href="#" class="nav-link ">Proveedores</a></li>
                                                 <li><a href="#" class="nav-link ">Empleados</a></li>
-                                                <li><a href="#" class="nav-link ">Prototipos</a></li>
+                                                <li><a href="?Modulo=Prototipos" class="nav-link ">Prototipos</a></li>
                                                 <li><a href="?Modulo=Proyectos" class="nav-link ">Proyectos</a></li>
                                                 <li><a href="?Modulo=Usuarios" class="nav-link ">Usuarios</a></li>
                                             </ul>
@@ -279,6 +280,10 @@ Mtnic Version: 4.6
 							    		include("tareas.php");	
 							    		break;
 							    		
+							    		case 'Casas':
+							    		include("casas.php");	
+							    		break;
+							    		
 							    		//Catálogos
 							    		case 'Usuarios':
 							    		include("usuarios.php");	
@@ -294,6 +299,10 @@ Mtnic Version: 4.6
 							    		
 							    		case 'Categorias':
 							    		include("categorias.php");	
+							    		break;
+							    		
+							    		case 'Prototipos':
+							    		include("prototipos.php");	
 							    		break;
 							    		
 							    		//Reportes
@@ -382,8 +391,9 @@ Mtnic Version: 4.6
         <script src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
         <script src="assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
-        
-        
+        <script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
         <script src="assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>
         <!--<script src="assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js" type="text/javascript"></script>
         <script src="assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js" type="text/javascript"></script>
@@ -411,7 +421,7 @@ Mtnic Version: 4.6
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="assets/apps/scripts/inbox.js" type="text/javascript"></script>
         <script src="assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
-
+		<script src="assets/pages/scripts/table-datatables-managed.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
