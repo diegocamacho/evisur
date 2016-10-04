@@ -131,6 +131,11 @@ if($fecha_finalizada):
 else:
 	
 	$dias_restantes = dias_restantes($tarea->fecha_limite);
+	
+	if($dias_restantes<0):
+		$es_negativo = 1;
+	endif;
+	
 	$dias_restantes = abs($dias_restantes);
 
 	$btn_compeltada = 'inline';
@@ -146,6 +151,10 @@ else:
 	elseif($dias_restantes>2):
 		$color = 'info';
 	endif;
+	
+	if($es_negativo):
+	
+	$color = 'danger';
 	
 	$f_lim = explode('-', $tarea->fecha_limite);
 	$dia_lim = $f_lim[2];
