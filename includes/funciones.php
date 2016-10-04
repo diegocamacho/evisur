@@ -458,3 +458,29 @@ function dameProyecto($id_proyecto) {
 	$dat=mysql_fetch_assoc($q);
 	return $dat['proyecto'];
 }
+
+function dias_restantes_mostrar($fecha_tarea){
+	
+	$dias_restantes = dias_restantes($fecha_tarea);
+	$dias_restantes = abs($dias_restantes);	
+	$hoy = date('Y-m-d');
+	
+	if(strtotime($hoy)<strtotime($fecha_tarea)):
+		if($dias_restantes==1):
+			$en = "Para Mañana";
+		else:
+		$en = "Entrega en $dias_restantes días";
+		endif;
+	elseif(date('Y-m-d')==$fecha_tarea):
+		$en = "Entrega: Hoy";			
+	else:
+		if($dias_restantes==1):
+			$en = "Venció Ayer";
+		else:
+			$en = "Venció hace $dias_restantes días";
+		endif;
+	endif;
+	
+	return $en;
+	
+}

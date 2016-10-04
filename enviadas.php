@@ -1,5 +1,5 @@
 <?
-
+	
 $f = $_GET['f'];
 
 $revision_sql1 = 0;
@@ -38,6 +38,7 @@ switch($f):
 		$sub = 'Tareas terminadas con éxito.';
 		$mostrar_li = 'inline';
 		$completadas_activo = $hover;
+		$completadas = 1;
 	break;
 	default:	
 		$sub = 'Tareas pendientes.';
@@ -156,8 +157,14 @@ $(function() {
 			                 	<?= $prioridad ?>
 			                 </span>
 			            </td>
-			            <td class="view-message text-right"> 
-				            <?= $mostrar_fecha ?> 
+			            <td class="view-message text-right" style="width:150px"> 
+				            <?
+					        if(!$completadas):
+					        	echo dias_restantes_mostrar($fecha);
+					        else:
+								echo 'Completada';
+							endif;
+					        ?>
 				        </td>
 
 			        </tr>

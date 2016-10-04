@@ -38,6 +38,7 @@ switch($f):
 		$sub = 'Tareas terminadas con éxito.';
 		$mostrar_li = 'inline';
 		$completadas_activo = $hover;
+		$completadas = 1;
 	break;
 	default:	
 		$sub = 'Tareas pendientes por hacer.';
@@ -60,13 +61,13 @@ $hay_tareas = count($tareas);
 <script>
 $(function() {
 	$("#pulsar").pulsate({
-	  color: '#3598dc', // set the color of the pulse
-	  reach: 30,                              // how far the pulse goes in px
-	  speed: 1000,                            // how long one pulse takes in ms
-	  pause: 0,                               // how long the pause between pulses is in ms
-	  glow: true,                             // if the glow should be shown too
-	  repeat: false,                           // will repeat forever if true, if given a number will repeat for that many times
-	  onHover: false                          // if true only pulsate if user hovers over the element
+	  color: '#3598dc',
+	  reach: 30,
+	  speed: 1000,
+	  pause: 0,
+	  glow: true,
+	  repeat: false,
+	  onHover: false 
 	});
 });
 </script>
@@ -154,8 +155,14 @@ $(function() {
 			                 	<?= $prioridad ?>
 			                 </span>
 			            </td>
-			            <td class="view-message text-right"> 
-				            <?= $mostrar_fecha ?> 
+			            <td class="view-message text-right" style="width:150px"> 
+				            <?
+					        if(!$completadas):
+					        	echo dias_restantes_mostrar($fecha);
+					        else:
+								echo 'Completada';
+							endif;
+					        ?>
 				        </td>
 
 			        </tr>
