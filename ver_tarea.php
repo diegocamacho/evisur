@@ -156,7 +156,13 @@ else:
 	$fecha_limite = $tarea->fecha_limite;
 	
 	if(strtotime($hoy)<strtotime($fecha_limite)):
-		$en = "en $dias_restantes $dia_no";
+		
+		if($dias_restantes==1):
+			$en = "Mañana";
+		else:
+			$en = "en $dias_restantes días";
+		endif;
+				
 	elseif(date('Y-m-d')==$tarea->fecha_limite):
 		$en = "Hoy";			
 	else:
