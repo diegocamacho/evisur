@@ -131,8 +131,8 @@ if($fecha_finalizada):
 else:
 	
 	$dias_restantes = dias_restantes($tarea->fecha_limite);
-	
-	if($dias_restantes<0):
+
+	if($dias_restantes>0):
 		$es_negativo = 1;
 	endif;
 	
@@ -153,8 +153,8 @@ else:
 	endif;
 	
 	if($es_negativo):
-	
-	$color = 'danger';
+		$color = 'danger';
+	endif;
 	
 	$f_lim = explode('-', $tarea->fecha_limite);
 	$dia_lim = $f_lim[2];
