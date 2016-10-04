@@ -167,9 +167,9 @@ else:
 		$en = "Hoy";			
 	else:
 		if($dias_restantes==1):
-			$en = "Atraso de $dias_restantes día";
+			$en = "Venció Ayer";
 		else:
-			$en = "Atraso de $dias_restantes días";
+			$en = "Venció hace $dias_restantes días";
 		endif;
 	endif;
 	
