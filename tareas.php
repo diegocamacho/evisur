@@ -82,7 +82,7 @@ endwhile;
 
 ?>
                                                             <li <?= $st ?>>
-                                                                <a href="javascript:;" class="componer_sidebar" id_usuario="<?= $user->id_usuario ?>">
+                                                                <a href="javascript:;" title="Último Acceso: <?=devuelveFechaHora($user->ultimo_acceso)?>" class="componer_sidebar" id_usuario="<?= $user->id_usuario ?>">
                                                                     <span class="contact-name">
                                                                     	<?= mayus($user->nombre) ?>
                                                                     </span>

@@ -12,6 +12,15 @@ $mensaje = str_replace("\n", "<br/><br/>", $mensaje);
 
 $hoy = date('Y-m-d H:i:s');
 //Updateamos el estado
+
+$sql = "SELECT*FROM tareas WHERE id_tarea = $id_tarea";
+$q = mysql_query($sql);
+$tarea = mysql_fetch_object($q);
+
+if($s_id_usuario!=$tarea->id_destino):
+	$q = mysql_query('UPDATE tareas SET leido = 0 WHERE id_tarea = $id_tarea');
+endif;
+
 $sql = "INSERT INTO comentarios (id_tarea,id_usuario,fecha_hora,comentario)VALUES('$id_tarea','$s_id_usuario','$hoy','$mensaje')";
 $q=mysql_query($sql) or die(mysql_error());
 
