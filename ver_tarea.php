@@ -12,7 +12,6 @@ WHERE tareas.id_tarea = $tarea AND (id_remite = $s_id_usuario OR id_destino = $s
 $q = mysql_query($sql);
 $tarea = mysql_fetch_object($q);
 
-
 $t_creador = 		$tarea->terminado_creador;
 $t_destino = 		$tarea->terminado_destino;
 $fecha_limite = 	$tarea->fecha_limite;
@@ -48,6 +47,10 @@ if($soyremite):
 		$remite_reabrir		= 'inline';
 	endif;
 
+	$por_para = 'Para';
+	$nombre_aqui = mayus($destino->nombre);
+	$foto_remite_destino = $destino->foto;
+
 endif;
 
 if($soydestino):
@@ -66,6 +69,10 @@ if($soydestino):
 		$q = mysql_query($sql);
 
 	endif;
+	
+	$por_para = 'Por';
+	$nombre_aqui = mayus($remitente->nombre);
+	$foto_remite_destino = $remitente->foto;
 
 endif;
 
@@ -345,8 +352,8 @@ $(function() {
 			<div class="inbox-view-info">
 			    <div class="row">
 			        <div class="col-md-12">
-			            <img height="30" src="files/<?= $remitente->foto ?>" class="inbox-author">
-			            Por <span class="sbold"><?= mayus($remitente->nombre) ?> </span> · 
+			            <img height="30" src="files/<?= $foto_remite_destino ?>" class="inbox-author">
+			            <?=$por_para?> <span class="sbold"><?= $nombre_aqui ?> </span> · 
 			            <span class="sbold"><?= $string_fecha ?></span> a las <?= $hora ?>
 			        </div>
 			    </div>

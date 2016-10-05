@@ -141,7 +141,7 @@ $(function() {
 					
 
 			?>
-			        <tr onclick="window.location = '?Modulo=Tareas&tarea=<?= $tarea->id_tarea ?>'" class="<?= $l ?>">
+			        <tr onclick="window.location = '?Modulo=Tareas&tipo=enviadas&tarea=<?= $tarea->id_tarea ?>'" class="<?= $l ?>">
 
 			            <td class="inbox-small-cells">
 			                <?= $estrella ?>
