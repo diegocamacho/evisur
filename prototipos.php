@@ -54,7 +54,7 @@ $val=count($prototipos);
 						<thead>
 					        <tr>
 					          <th>Prototipo</th>
-					          <th width="180"></th>
+					          <th width="260"></th>
 					        </tr>
 					      </thead>
 					      <tbody>
@@ -64,6 +64,7 @@ $val=count($prototipos);
 					          <td align="right">
 					          		<img src="assets/global/img/loading-spinner-grey.gif" border="0" id="load_<?=$prototipo->id_prototipo?>" width="19" class="oculto" />
 					          	<? if($prototipo->activo==1): ?>
+						          	<span class="label label-primary link btn_<?=$prototipo->id_prototipo?>" onclick="javascript:Destajos(<?=$prototipo->id_prototipo?>);">Destajos</span> &nbsp; &nbsp; 
 					          		<span class="label label-success link btn_<?=$prototipo->id_prototipo?>" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#EditaPrototipo" data-id="<?=$prototipo->id_prototipo?>">Editar</span> &nbsp; &nbsp; 
 					          		<span class="label label-danger link btn_<?=$prototipo->id_prototipo?>" onclick="javascript:Desactiva(<?=$prototipo->id_prototipo?>)">Desactivar</span>
 					          	<? else: ?>
@@ -283,5 +284,8 @@ function NuevoPrototipo(){
 			$('#msg_error').show('Fast');
 	    }
 	});
+}
+function Destajos(id){
+	window.open("?Modulo=Destajos&id="+id, "_self");
 }
 </script>

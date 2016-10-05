@@ -232,6 +232,14 @@ Mtnic Version: 4.6
                                                      	<li><a href="?Modulo=Categorias" class="nav-link ">Categorías de Prodcutos</a></li>   
                                                     </ul>
                                                 </li>
+                                                <!--
+                                                <li class="dropdown-submenu">
+                                                    <a href="javascript:;" class="nav-link nav-toggle ">Destajos<span class="arrow"></span></a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="?Modulo=" class="nav-link ">Categorías destajos</a></li>
+                                                     	<li><a href="?Modulo=" class="nav-link ">Productos destajos</a></li>   
+                                                    </ul>
+                                                </li>-->
                                                 <li><a href="#" class="nav-link ">Proveedores</a></li>
                                                 <li><a href="#" class="nav-link ">Empleados</a></li>
                                                 <li><a href="?Modulo=Prototipos" class="nav-link ">Prototipos</a></li>
@@ -303,6 +311,10 @@ Mtnic Version: 4.6
 							    		
 							    		case 'Prototipos':
 							    		include("prototipos.php");	
+							    		break;
+							    		
+							    		case 'Destajos':
+							    		include("destajos.php");	
 							    		break;
 							    		
 							    		//Reportes
